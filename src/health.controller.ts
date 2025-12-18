@@ -1,7 +1,8 @@
 import { Controller, Get, Res } from "@nestjs/common";
 import { ApiOkResponse } from "@nestjs/swagger";
-import { appMetadata } from "@softvence/mail";
 import type { Response } from "express";
+
+const packageJson = require("../package.json");
 
 @Controller()
 export class HealthController {
@@ -20,9 +21,9 @@ export class HealthController {
     health(@Res() res: Response) {
         res.status(200).json({
             status: "ok",
-            name: appMetadata.displayName,
-            version: appMetadata.version,
-            description: appMetadata.description,
+            name: packageJson.name,
+            version: packageJson.version,
+            description: packageJson.description,
             environment: process.env.NODE_ENV,
             uptime: process.uptime(),
             timestamp: new Date().toISOString(),
@@ -31,16 +32,10 @@ export class HealthController {
                 leader: "Niloy",
                 members: [
                     {
-                        name: "Sabbir Hossain Shuvo",
-                        role: "Software Engineer & Content Creator",
-                        avatar: "https://avatars.githubusercontent.com/u/82939905?v=4",
-                        url: "https://api.github.com/users/devlopersabbir",
-                    },
-                    {
-                        name: "Mohammad Sobuj",
-                        role: "Full-stack web developer👨‍💻",
-                        avatar: "https://avatars.githubusercontent.com/u/72593531?v=4",
-                        url: "https://api.github.com/users/coderboysobuj",
+                        name: "Mirza Saikat Ahmmed",
+                        role: "Backend Developer",
+                        avatar: "https://avatars.githubusercontent.com/u/30868301?v=4",
+                        url: "https://api.github.com/users/mirzasaikatahmmed",
                     },
                 ],
             },

@@ -1,7 +1,9 @@
 import { Controller, Get, Res } from "@nestjs/common";
 import { ApiOkResponse } from "@nestjs/swagger";
-import { appMetadata } from "@softvence/mail";
 import type { Response } from "express";
+
+const packageJson = require("../package.json");
+
 @Controller()
 export class AppController {
     @ApiOkResponse({
@@ -19,9 +21,9 @@ export class AppController {
     async getHealthCheck(@Res() res: Response) {
         res.status(200).json({
             status: "ok",
-            name: appMetadata.displayName,
-            version: appMetadata.version,
-            description: appMetadata.description,
+            name: packageJson.name,
+            version: packageJson.version,
+            description: packageJson.description,
             environment: process.env.NODE_ENV,
             uptime: process.uptime(),
             timestamp: new Date().toISOString(),
@@ -30,12 +32,10 @@ export class AppController {
                 leader: "Niloy",
                 members: [
                     {
-                        name: "Milon",
+                        name: "Mirza Saikat Ahmmed",
                         role: "Backend Developer",
-                    },
-                    {
-                        name: "Sujon",
-                        role: "Backend Developer",
+                        avatar: "https://avatars.githubusercontent.com/u/30868301?v=4",
+                        url: "https://api.github.com/users/mirzasaikatahmmed",
                     },
                 ],
             },

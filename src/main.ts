@@ -3,14 +3,16 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import "reflect-metadata";
 import { AppModule } from "./app.module";
 
+const packageJson = require("../package.json");
+
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
-    // ✅ Swagger config with Bearer Auth
 
+    // Swagger API Documentation Configuration
     const config = new DocumentBuilder()
-        // .setTitle(appMetadata.displayName)
-        // .setDescription(appMetadata.description)
-        // .setVersion(appMetadata.version)
+        .setTitle(packageJson.name)
+        .setDescription(packageJson.description || "API Documentation")
+        .setVersion(packageJson.version)
         .addBearerAuth()
         .build();
 
@@ -20,6 +22,7 @@ async function bootstrap() {
             persistAuthorization: true,
         },
     });
+
     await app.listen(process.env.PORT ?? 8080);
 }
 bootstrap();
