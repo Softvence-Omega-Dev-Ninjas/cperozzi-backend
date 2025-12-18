@@ -1,0 +1,23 @@
+model ProposalDraft {
+  id                         String   @id @default(uuid()) @db.Uuid
+  organizationId             String   @map("organization_id") @db.Uuid
+  grantId                    String   @map("grant_id") @db.Uuid
+  executiveSummary           String?  @map("executive_summary") @db.Text
+  introductionToOrganization String?  @map("introduction_to_organization") @db.Text
+  problemStatement           String?  @map("problem_statement") @db.Text
+  goalsAndObjectives         String?  @map("goals_and_objectives") @db.Text
+  methodsAndActivities       String?  @map("methods_and_activities") @db.Text
+  evaluationPlan             String?  @map("evaluation_plan") @db.Text
+  sustainabilityPlan         String?  @map("sustainability_plan") @db.Text
+  budgetSummary              String?  @map("budget_summary") @db.Text
+  conclusion                 String?  @map("conclusion") @db.Text
+  status                     Boolean  @default(false) // false = draft, true = completed
+  createdAt                  DateTime @default(now()) @map("created_at")
+
+  organization Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  grant        GrantOpportunity @relation(fields: [grantId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([grantId])
+  @@map("proposal_drafts")
+}
