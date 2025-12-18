@@ -1,0 +1,16 @@
+model ReadinessScore {
+  id               String   @id @default(uuid()) @db.Uuid
+  organizationId   String   @map("organization_id") @db.Uuid
+  grantId          String   @map("grant_id") @db.Uuid
+  readinessScore   Int      @map("readiness_score")
+  strengths        String?  @db.Text
+  improvementAreas String?  @map("improvement_areas") @db.Text
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  organization Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  grant        GrantOpportunity @relation(fields: [grantId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([grantId])
+  @@map("readiness_scores")
+}

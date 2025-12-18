@@ -1,0 +1,14 @@
+model InternalGrantSource {
+  id              String   @id @default(uuid()) @db.Uuid
+  organizationId  String   @map("organization_id") @db.Uuid
+  opportunityText String?  @map("opportunity_text") @db.Text
+  opportunityUrl  String?  @map("opportunity_url") @db.VarChar
+  opportunityPdf  String?  @map("opportunity_pdf") @db.VarChar
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  organization       Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  grantOpportunities GrantOpportunity[]
+
+  @@index([organizationId])
+  @@map("internal_grant_sources")
+}
