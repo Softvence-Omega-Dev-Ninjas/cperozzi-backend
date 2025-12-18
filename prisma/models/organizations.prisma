@@ -1,0 +1,26 @@
+model Organization {
+  id                      String   @id @default(uuid()) @db.Uuid
+  organizationName        String   @map("organization_name") @db.VarChar
+  organizationWebsite     String?  @map("organization_website") @db.VarChar
+  missionStatement        String?  @map("mission_statement") @db.Text
+  refinedMissionStatement String?  @map("refined_mission_statement") @db.Text
+  corePurpose             String?  @map("core_purpose") @db.Text
+  typeOfWork              String?  @map("type_of_work") @db.VarChar
+  goalsAspirations        String?  @map("goals_aspirations") @db.Text
+  programs                String?  @map("programs") @db.Text
+  achievements            String?  @map("achievements") @db.Text
+  budget                  String?  @map("budget") @db.Text
+  evaluation              String?  @map("evaluation") @db.Text
+  noOfGrants              Int?     @map("no_of_grants")
+  sharedLink              String?  @map("shared_link") @db.VarChar
+  isGrant                 Boolean  @default(false) @map("is_grant")
+  createdAt               DateTime @default(now()) @map("created_at")
+
+  grantOpportunities   GrantOpportunity[]
+  internalGrantSources InternalGrantSource[]
+  readinessScores      ReadinessScore[]
+  lettersOfIntent      LetterOfIntent[]
+  proposalDrafts       ProposalDraft[]
+
+  @@map("organizations")
+}
