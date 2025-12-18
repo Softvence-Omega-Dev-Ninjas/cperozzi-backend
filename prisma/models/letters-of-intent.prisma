@@ -1,0 +1,18 @@
+model LetterOfIntent {
+  id                    String   @id @default(uuid()) @db.Uuid
+  organizationId        String   @map("organization_id") @db.Uuid
+  grantId               String   @map("grant_id") @db.Uuid
+  introduction          String?  @db.Text
+  organizationalSummary String?  @map("organizational_summary") @db.Text
+  projectOverview       String?  @map("project_overview") @db.Text
+  fundingRequest        Decimal? @map("funding_request") @db.Decimal(15, 2)
+  closingStatement      String?  @map("closing_statement") @db.Text
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  organization Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  grant        GrantOpportunity @relation(fields: [grantId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([grantId])
+  @@map("letters_of_intent")
+}

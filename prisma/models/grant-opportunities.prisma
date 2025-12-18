@@ -1,0 +1,27 @@
+model GrantOpportunity {
+  id                  String    @id @default(uuid()) @db.Uuid
+  organizationId      String    @map("organization_id") @db.Uuid
+  funderName          String    @map("funder_name") @db.VarChar
+  focusArea           String?   @map("focus_area") @db.VarChar
+  deadline            DateTime? @db.Date
+  amountUsd           Decimal?  @map("amount_usd") @db.Decimal(15, 2)
+  eligibility         String?   @db.VarChar
+  attachmentsRequired String?   @map("attachments_required") @db.VarChar
+  applicationFormat   String?   @map("application_format") @db.VarChar
+  funderProfileUrl    String?   @map("funder_profile_url") @db.VarChar
+  recipGsProfileLink  String?   @map("recip_gs_profile_link") @db.VarChar
+  source              String?   @db.VarChar // internal, candid, grants.gov, foundation, corporate
+  internalSourceId    String?   @map("internal_source_id") @db.Uuid
+  grantType           String?   @map("grant_type") @db.VarChar // private, govt, corporate
+  createdAt           DateTime  @default(now()) @map("created_at")
+
+  organization    Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  internalSource  InternalGrantSource? @relation(fields: [internalSourceId], references: [id], onDelete: SetNull)
+  readinessScores ReadinessScore[]
+  lettersOfIntent LetterOfIntent[]
+  proposalDrafts  ProposalDraft[]
+
+  @@index([organizationId])
+  @@index([internalSourceId])
+  @@map("grant_opportunities")
+}
