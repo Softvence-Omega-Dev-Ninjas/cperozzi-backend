@@ -7,3 +7,10 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+include "./models/organizations.prisma"
+include "./models/grant-opportunities.prisma"
+include "./models/internal-grant-sources.prisma"
+include "./models/readiness-scores.prisma"
+include "./models/letters-of-intent.prisma"
+include "./models/proposal-drafts.prisma"
