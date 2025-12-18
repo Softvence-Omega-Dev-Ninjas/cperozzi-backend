@@ -1,28 +1,20 @@
 import {
-    Controller,
-    Get,
-    Post,
     Body,
-    Patch,
-    Param,
+    Controller,
     Delete,
-    Query,
+    Get,
     HttpCode,
     HttpStatus,
+    Param,
+    Patch,
+    Post,
+    Query,
 } from "@nestjs/common";
-import {
-    ApiTags,
-    ApiOperation,
-    ApiResponse,
-    ApiParam,
-    ApiQuery,
-    ApiBearerAuth,
-} from "@nestjs/swagger";
+import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { CreateReadinessDto, ReadinessResponseDto, UpdateReadinessDto } from "./dto";
 import { ReadinessService } from "./readiness.service";
-import { CreateReadinessDto, UpdateReadinessDto, ReadinessResponseDto } from "./dto";
 
 @ApiTags("Readiness Scores")
-@ApiBearerAuth()
 @Controller("readiness")
 export class ReadinessController {
     constructor(private readonly readinessService: ReadinessService) {}
