@@ -63,10 +63,6 @@ pnpm-lock.yaml
 pnpm-lock.yml
 .pnpm-store
 
-# Prisma
-prisma/generated
-/generated/prisma
-
 # Deployment files
 *.pem
 *.key
@@ -79,3 +75,4 @@ nginx
 data
 TODO-SAIKAT.md
 /resources
+/docs
