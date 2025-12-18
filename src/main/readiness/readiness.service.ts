@@ -1,13 +1,12 @@
-import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../../common/prisma/prisma.service";
-import { CreateReadinessDto, UpdateReadinessDto, ReadinessResponseDto } from "./dto";
+import { CreateReadinessDto, ReadinessResponseDto, UpdateReadinessDto } from "./dto";
 
 @Injectable()
 export class ReadinessService {
     constructor(private readonly prisma: PrismaService) {}
 
     async create(createReadinessDto: CreateReadinessDto): Promise<ReadinessResponseDto> {
-        // Verify organization exists
         const organization = await this.prisma.organization.findUnique({
             where: { id: createReadinessDto.organizationId },
         });
@@ -18,7 +17,6 @@ export class ReadinessService {
             );
         }
 
-        // Verify grant exists
         const grant = await this.prisma.grantOpportunity.findUnique({
             where: { id: createReadinessDto.grantId },
         });
@@ -27,7 +25,6 @@ export class ReadinessService {
             throw new NotFoundException(`Grant with ID ${createReadinessDto.grantId} not found`);
         }
 
-        // Check if grant belongs to organization
         if (grant.organizationId !== createReadinessDto.organizationId) {
             throw new BadRequestException("Grant does not belong to the specified organization");
         }
@@ -84,7 +81,6 @@ export class ReadinessService {
         id: string,
         updateReadinessDto: UpdateReadinessDto,
     ): Promise<ReadinessResponseDto> {
-        // Check if readiness score exists
         const existingScore = await this.prisma.readinessScore.findUnique({
             where: { id },
         });
@@ -106,7 +102,6 @@ export class ReadinessService {
     }
 
     async remove(id: string): Promise<void> {
-        // Check if readiness score exists
         const existingScore = await this.prisma.readinessScore.findUnique({
             where: { id },
         });
