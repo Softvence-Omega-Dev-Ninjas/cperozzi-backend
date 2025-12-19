@@ -18,6 +18,10 @@ import { GrantSourceService } from "./grant-source.service";
 import { CreateInternalGrantSourceDto } from "./dto/create-grant-source.dto";
 import { UpdateInternalGrantSourceDto } from "./dto/update-grant-source.dto";
 import { InternalGrantSourceResponseDto } from "./grant-source.response.dto";
+import {
+    GrantSourceFileListResponseDto,
+    DeleteGrantSourceFileResponseDto,
+} from "./dto/grant-source-file.dto";
 
 @ApiTags("Grant Sources")
 @Controller("grant-source")
@@ -97,6 +101,18 @@ export class GrantSourceController {
         return this.grantSourceService.findAll();
     }
 
+    // ----------------- LIST FILES IN GRANT-SOURCES FOLDER -----------------
+    @Get("files/list")
+    @ApiOperation({ summary: "Get all files from grant-sources folder in AWS S3" })
+    @ApiResponse({
+        status: 200,
+        description: "List of all files in the grant-sources folder.",
+        type: GrantSourceFileListResponseDto,
+    })
+    async listGrantSourceFiles(): Promise<GrantSourceFileListResponseDto> {
+        return this.grantSourceService.listGrantSourceFiles();
+    }
+
     // ----------------- GET ONE -----------------
     @ApiOperation({ summary: "Get a single Grant Source by ID" })
     @ApiResponse({
@@ -169,6 +185,21 @@ export class GrantSourceController {
         },
     ): Promise<InternalGrantSourceResponseDto> {
         return this.grantSourceService.update(id, updateDto, pdfFile);
+    }
+
+    // ----------------- DELETE FILE BY NAME FROM GRANT-SOURCES FOLDER -----------------
+    @Delete("files/:fileName")
+    @ApiOperation({ summary: "Delete a file by filename from grant-sources folder in AWS S3" })
+    @ApiResponse({
+        status: 200,
+        description: "The file has been successfully deleted.",
+        type: DeleteGrantSourceFileResponseDto,
+    })
+    @ApiResponse({ status: 404, description: "File not found." })
+    async deleteGrantSourceFileByName(
+        @Param("fileName") fileName: string,
+    ): Promise<DeleteGrantSourceFileResponseDto> {
+        return this.grantSourceService.deleteGrantSourceFileByName(fileName);
     }
 
     // ----------------- DELETE -----------------

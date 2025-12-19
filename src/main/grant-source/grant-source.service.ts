@@ -2,10 +2,13 @@ import { BadRequestException, Injectable, NotFoundException } from "@nestjs/comm
 import { PrismaService } from "../../common/prisma/prisma.service";
 import { S3WrapperService } from "../../common/s3/s3-wrapper.service";
 import { CreateInternalGrantSourceDto } from "./dto/create-grant-source.dto";
+import {
+    DeleteGrantSourceFileResponseDto,
+    GrantSourceFileListResponseDto,
+} from "./dto/grant-source-file.dto";
 import { UpdateInternalGrantSourceDto } from "./dto/update-grant-source.dto";
 import { InternalGrantSourceResponseDto } from "./grant-source.response.dto";
 
-// Type for file uploads (compatible with Express.Multer.File and custom file objects)
 type UploadFile = {
     fieldname: string;
     originalname: string;
@@ -208,6 +211,85 @@ export class GrantSourceService {
             }
             throw new BadRequestException(
                 `Failed to delete grant source: ${error?.message || "Unknown error"}`,
+            );
+        }
+    }
+
+    // ----------------- LIST FILES IN GRANT-SOURCES FOLDER -----------------
+    async listGrantSourceFiles(): Promise<GrantSourceFileListResponseDto> {
+        try {
+            let files;
+            try {
+                files = await this.s3Service.listFilesInFolder("grant-sources");
+            } catch (s3Error: any) {
+                throw new BadRequestException(
+                    `Failed to list grant source files from S3: ${s3Error?.message || "Unknown error"}`,
+                );
+            }
+
+            try {
+                return {
+                    files,
+                    total: files.length,
+                };
+            } catch (responseError: any) {
+                throw new BadRequestException(
+                    `Failed to format grant source files response: ${responseError?.message || "Unknown error"}`,
+                );
+            }
+        } catch (error: any) {
+            // Re-throw if it's already a BadRequestException
+            if (error instanceof BadRequestException) {
+                throw error;
+            }
+            throw new BadRequestException(
+                `Failed to list grant source files: ${error?.message || "Unknown error"}`,
+            );
+        }
+    }
+
+    // ----------------- DELETE FILE BY NAME FROM GRANT-SOURCES FOLDER -----------------
+    async deleteGrantSourceFileByName(fileName: string): Promise<DeleteGrantSourceFileResponseDto> {
+        try {
+            // Validate fileName input
+            if (!fileName || fileName.trim().length === 0) {
+                throw new BadRequestException("File name cannot be empty");
+            }
+
+            try {
+                await this.s3Service.deleteFileByName(fileName, "grant-sources");
+            } catch (s3Error: any) {
+                // Check if it's a "not found" error
+                if (
+                    s3Error.message?.includes("not found") ||
+                    s3Error.message?.includes("not found in folder")
+                ) {
+                    throw new NotFoundException(
+                        `File "${fileName}" not found in grant-sources folder`,
+                    );
+                }
+                throw new BadRequestException(
+                    `Failed to delete grant source file from S3: ${s3Error?.message || "Unknown error"}`,
+                );
+            }
+
+            try {
+                return {
+                    message: "File deleted successfully",
+                    fileName,
+                };
+            } catch (responseError: any) {
+                throw new BadRequestException(
+                    `Failed to format delete response: ${responseError?.message || "Unknown error"}`,
+                );
+            }
+        } catch (error: any) {
+            // Re-throw if it's already a properly formatted exception
+            if (error instanceof NotFoundException || error instanceof BadRequestException) {
+                throw error;
+            }
+            throw new BadRequestException(
+                `Failed to delete grant source file: ${error?.message || "Unknown error"}`,
             );
         }
     }

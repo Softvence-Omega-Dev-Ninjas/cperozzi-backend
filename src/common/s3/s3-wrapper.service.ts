@@ -16,6 +16,7 @@ const {
     GetObjectCommand,
     DeleteObjectCommand,
     HeadObjectCommand,
+    ListObjectsV2Command,
 } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
@@ -351,6 +352,155 @@ export class S3WrapperService implements OnModuleInit {
             }
         } catch {
             return null;
+        }
+    }
+
+    async listFilesInFolder(folder: string = "grant-sources"): Promise<
+        Array<{
+            key: string;
+            fileName: string;
+            size: number;
+            lastModified: Date;
+            url: string;
+        }>
+    > {
+        try {
+            const files: Array<{
+                key: string;
+                fileName: string;
+                size: number;
+                lastModified: Date;
+                url: string;
+            }> = [];
+
+            let continuationToken: string | undefined;
+            let isTruncated = true;
+
+            while (isTruncated) {
+                try {
+                    const commandParams: any = {
+                        Bucket: this.bucket,
+                        Prefix: `${folder}/`,
+                    };
+
+                    if (continuationToken) {
+                        commandParams.ContinuationToken = continuationToken;
+                    }
+
+                    const command = new ListObjectsV2Command(commandParams);
+                    const response = await this.s3Client.send(command);
+
+                    try {
+                        if (response.Contents && response.Contents.length > 0) {
+                            for (const object of response.Contents) {
+                                try {
+                                    if (object.Key && !object.Key.endsWith("/")) {
+                                        const fileName = object.Key.split("/").pop() || object.Key;
+                                        const url = `https://${this.bucket}.s3.${this.region}.amazonaws.com/${object.Key}`;
+
+                                        files.push({
+                                            key: object.Key,
+                                            fileName,
+                                            size: object.Size || 0,
+                                            lastModified: object.LastModified || new Date(),
+                                            url,
+                                        });
+                                    }
+                                } catch (itemError: any) {
+                                    this.logger.warn(
+                                        `Failed to process file item ${object.Key}: ${itemError?.message}`,
+                                    );
+                                }
+                            }
+                        }
+                    } catch (processError: any) {
+                        this.logger.error(
+                            `Failed to process response contents: ${processError?.message}`,
+                            processError?.stack,
+                        );
+                        throw processError;
+                    }
+
+                    isTruncated = response.IsTruncated || false;
+                    continuationToken = response.NextContinuationToken;
+                } catch (pageError: any) {
+                    this.logger.error(
+                        `Failed to fetch page of files: ${pageError?.message}`,
+                        pageError?.stack,
+                    );
+                    throw pageError;
+                }
+            }
+
+            this.logger.log(`Listed ${files.length} files from folder: ${folder}`);
+            return files;
+        } catch (error: any) {
+            this.logger.error(
+                `Failed to list files in folder ${folder}: ${error?.message}`,
+                error?.stack,
+            );
+
+            if (error.name === "NoSuchBucket") {
+                throw new Error(
+                    `S3 bucket "${this.bucket}" does not exist or you don't have access to it. Original error: ${error.message}`,
+                );
+            }
+            if (error.name === "AccessDenied") {
+                throw new Error(
+                    `Access denied to S3 bucket "${this.bucket}". Please check your AWS credentials and bucket permissions. Original error: ${error.message}`,
+                );
+            }
+
+            throw new Error(`Failed to list files in folder: ${error?.message || "Unknown error"}`);
+        }
+    }
+
+    async deleteFileByName(fileName: string, folder: string = "grant-sources"): Promise<void> {
+        try {
+            let files;
+            try {
+                files = await this.listFilesInFolder(folder);
+            } catch (listError: any) {
+                this.logger.error(
+                    `Failed to list files when searching for ${fileName}: ${listError?.message}`,
+                    listError?.stack,
+                );
+                throw new Error(
+                    `Failed to search for file: ${listError?.message || "Unknown error"}`,
+                );
+            }
+
+            const file = files.find((f) => f.fileName === fileName);
+
+            if (!file) {
+                throw new Error(`File "${fileName}" not found in folder "${folder}"`);
+            }
+
+            try {
+                await this.deleteFile(file.key);
+                this.logger.log(
+                    `File deleted successfully by name: ${fileName} (key: ${file.key})`,
+                );
+            } catch (deleteError: any) {
+                this.logger.error(
+                    `Failed to delete file ${file.key}: ${deleteError?.message}`,
+                    deleteError?.stack,
+                );
+                throw new Error(
+                    `Failed to delete file: ${deleteError?.message || "Unknown error"}`,
+                );
+            }
+        } catch (error: any) {
+            if (error.message?.includes("not found")) {
+                throw error;
+            }
+
+            this.logger.error(
+                `Failed to delete file by name ${fileName}: ${error?.message}`,
+                error?.stack,
+            );
+
+            throw new Error(`Failed to delete file by name: ${error?.message || "Unknown error"}`);
         }
     }
 
