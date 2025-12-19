@@ -8,7 +8,7 @@ import { OrganizationResponseDto } from "./organization.response.dto";
 export class OrganizationService {
     constructor(private readonly prisma: PrismaService) {}
 
-   async create(createOrganizationDto: CreateOrganizationDto) {
+    async create(createOrganizationDto: CreateOrganizationDto) {
         const organization = await this.prisma.organization.create({
             data: createOrganizationDto,
         });
@@ -19,7 +19,7 @@ export class OrganizationService {
         return organization;
     }
 
-   async findOne(id: string) {
+    async findOne(id: string) {
         const organization = await this.prisma.organization.findUnique({
             where: { id },
         });
@@ -31,7 +31,7 @@ export class OrganizationService {
         return organization;
     }
 
- async   update(id: string, updateOrganizationDto: UpdateOrganizationDto) {
+    async update(id: string, updateOrganizationDto: UpdateOrganizationDto) {
         const organization = await this.prisma.organization.findUnique({
             where: { id },
         });
