@@ -1,6 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
+    UploadedFile,
+    UseInterceptors,
+    ParseFilePipe,
+    MaxFileSizeValidator,
+    FileTypeValidator,
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { ApiOperation, ApiConsumes, ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { GrantSourceService } from "./grant-source.service";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateInternalGrantSourceDto } from "./dto/create-grant-source.dto";
 import { UpdateInternalGrantSourceDto } from "./dto/update-grant-source.dto";
 import { InternalGrantSourceResponseDto } from "./grant-source.response.dto";
@@ -11,31 +25,77 @@ export class GrantSourceController {
     constructor(private readonly grantSourceService: GrantSourceService) {}
 
     // ----------------- CREATE -----------------
-    @ApiOperation({ summary: "Create a new Grant Source" })
+    @Post()
+    @UseInterceptors(FileInterceptor("pdf"))
+    @ApiOperation({ summary: "Create a new Grant Source with optional PDF upload" })
+    @ApiConsumes("multipart/form-data")
+    @ApiBody({
+        schema: {
+            type: "object",
+            properties: {
+                organizationId: {
+                    type: "string",
+                    format: "uuid",
+                    description: "Organization ID",
+                },
+                opportunityText: {
+                    type: "string",
+                    description: "Text description of the opportunity",
+                },
+                opportunityUrl: {
+                    type: "string",
+                    format: "uri",
+                    description: "URL link for the opportunity",
+                },
+                pdf: {
+                    type: "string",
+                    format: "binary",
+                    description: "PDF file to upload (optional)",
+                },
+            },
+            required: ["organizationId"],
+        },
+    })
     @ApiResponse({
         status: 201,
         description: "The grant source has been successfully created.",
         type: InternalGrantSourceResponseDto,
     })
     @ApiResponse({ status: 400, description: "Bad Request." })
-    @Post()
     async create(
         @Body() createDto: CreateInternalGrantSourceDto,
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }), // 10MB
+                    new FileTypeValidator({ fileType: "application/pdf" }),
+                ],
+                fileIsRequired: false,
+            }),
+        )
+        pdfFile?: {
+            fieldname: string;
+            originalname: string;
+            encoding: string;
+            mimetype: string;
+            size: number;
+            buffer: Buffer;
+        },
     ): Promise<InternalGrantSourceResponseDto> {
-        return this.grantSourceService.create(createDto);
+        return this.grantSourceService.create(createDto, pdfFile);
     }
 
-    // // ----------------- GET ALL -----------------
-    // @ApiOperation({ summary: "Get all Grant Sources" })
-    // @ApiResponse({
-    //   status: 200,
-    //   description: "List of all grant sources.",
-    //   type: [InternalGrantSourceResponseDto],
-    // })
-    // @Get()
-    // async findAll(): Promise<InternalGrantSourceResponseDto[]> {
-    //   return this.grantSourceService.findAll();
-    // }
+    // ----------------- GET ALL -----------------
+    @Get()
+    @ApiOperation({ summary: "Get all Grant Sources" })
+    @ApiResponse({
+        status: 200,
+        description: "List of all grant sources.",
+        type: [InternalGrantSourceResponseDto],
+    })
+    async findAll(): Promise<InternalGrantSourceResponseDto[]> {
+        return this.grantSourceService.findAll();
+    }
 
     // ----------------- GET ONE -----------------
     @ApiOperation({ summary: "Get a single Grant Source by ID" })
@@ -51,7 +111,35 @@ export class GrantSourceController {
     }
 
     // ----------------- UPDATE -----------------
-    @ApiOperation({ summary: "Update a Grant Source by ID" })
+    @Patch(":id")
+    @UseInterceptors(FileInterceptor("pdf"))
+    @ApiOperation({ summary: "Update a Grant Source by ID with optional PDF upload" })
+    @ApiConsumes("multipart/form-data")
+    @ApiBody({
+        schema: {
+            type: "object",
+            properties: {
+                opportunityText: {
+                    type: "string",
+                    description: "Text description of the opportunity",
+                },
+                opportunityUrl: {
+                    type: "string",
+                    format: "uri",
+                    description: "URL link for the opportunity",
+                },
+                opportunityPdf: {
+                    type: "string",
+                    description: "PDF URL (if not uploading a file)",
+                },
+                pdf: {
+                    type: "string",
+                    format: "binary",
+                    description: "PDF file to upload (optional)",
+                },
+            },
+        },
+    })
     @ApiResponse({
         status: 200,
         description: "The grant source has been successfully updated.",
@@ -59,12 +147,28 @@ export class GrantSourceController {
     })
     @ApiResponse({ status: 400, description: "Bad Request." })
     @ApiResponse({ status: 404, description: "Grant source not found." })
-    @Patch(":id")
     async update(
         @Param("id") id: string,
         @Body() updateDto: UpdateInternalGrantSourceDto,
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }), // 10MB
+                    new FileTypeValidator({ fileType: "application/pdf" }),
+                ],
+                fileIsRequired: false,
+            }),
+        )
+        pdfFile?: {
+            fieldname: string;
+            originalname: string;
+            encoding: string;
+            mimetype: string;
+            size: number;
+            buffer: Buffer;
+        },
     ): Promise<InternalGrantSourceResponseDto> {
-        return this.grantSourceService.update(id, updateDto);
+        return this.grantSourceService.update(id, updateDto, pdfFile);
     }
 
     // ----------------- DELETE -----------------

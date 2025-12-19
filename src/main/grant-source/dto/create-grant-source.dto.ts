@@ -26,7 +26,7 @@ export class CreateInternalGrantSourceDto {
     opportunityUrl?: string;
 
     @ApiPropertyOptional({
-        description: "PDF file path or URL for the opportunity (optional, can remain null)",
+        description: "PDF file URL (optional, use file upload instead)",
         example: "https://s3.amazonaws.com/my-bucket/opportunity.pdf",
     })
     @IsOptional()
