@@ -1,21 +1,9 @@
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
 import { S3Module } from "@softvence/s3";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
-import { MailModule } from "./common/mail/mail.module";
-import { PrismaModule } from "./common/prisma/prisma.module";
-import { MainModule } from "./main/main.module";
+import { S3WrapperService } from "./s3-wrapper.service";
 
 @Module({
     imports: [
-        ConfigModule.forRoot({
-            isGlobal: true,
-            envFilePath: ".env",
-        }),
-        PrismaModule,
-        MainModule,
-        MailModule,
         S3Module.forRoot({
             region: process.env.AWS_BUCKET_REGION!,
             bucket: process.env.AWS_S3_BUCKET_NAME || process.env.AWS_BUCKET_NAME!,
@@ -30,7 +18,7 @@ import { MainModule } from "./main/main.module";
             },
         }),
     ],
-    controllers: [AppController],
-    providers: [AppService],
+    providers: [S3WrapperService],
+    exports: [S3WrapperService],
 })
-export class AppModule {}
+export class S3WrapperModule {}

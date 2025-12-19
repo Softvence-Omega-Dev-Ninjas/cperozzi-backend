@@ -221,7 +221,7 @@ const config = {
             value: "prisma-client-js",
         },
         output: {
-            value: "C:\\chamonali\\cperozzi-backend\\prisma\\generated",
+            value: "C:\\Users\\MIRZA_SAIKAT_AHMMED\\Desktop\\SAIKAT\\project\\cperozzi-backend\\prisma\\generated",
             fromEnvVar: null,
         },
         config: {
@@ -235,7 +235,8 @@ const config = {
             },
         ],
         previewFeatures: [],
-        sourceFilePath: "C:\\chamonali\\cperozzi-backend\\prisma\\models\\schema.prisma",
+        sourceFilePath:
+            "C:\\Users\\MIRZA_SAIKAT_AHMMED\\Desktop\\SAIKAT\\project\\cperozzi-backend\\prisma\\models\\schema.prisma",
         isCustomOutput: true,
     },
     relativeEnvPaths: {
