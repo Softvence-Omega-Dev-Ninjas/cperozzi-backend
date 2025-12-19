@@ -465,7 +465,7 @@ async function main() {
                     "Total Project Budget: $500,000\n\nPersonnel (35%): $175,000\n- Project Director, Restoration Specialists, Community Coordinators\n\nDirect Program Costs (50%): $250,000\n- Seedlings and planting materials: $80,000\n- Site preparation and maintenance: $60,000\n- Water conservation infrastructure: $40,000\n- Training materials and workshops: $35,000\n- Monitoring equipment: $25,000\n- Community incentives: $10,000\n\nAdministrative & Indirect (10%): $50,000\n\nEvaluation (5%): $25,000\n\nThe budget reflects careful planning to maximize direct program impact while ensuring proper project management and rigorous evaluation.",
                 conclusion:
                     "This project represents a critical opportunity to reverse environmental degradation while empowering communities to become environmental stewards. Our proven track record, scientific approach, and deep community relationships position us uniquely to deliver the transformational impact envisioned by the Green Planet Fund. The restoration of 2,000 acres will create a ripple effect, demonstrating sustainable models that can be replicated across the region. We are committed to transparent partnership and look forward to working with the Green Planet Fund to create lasting environmental and social value.",
-                status: true,
+                downloadStatus: true,
             },
         }),
         prisma.proposalDraft.create({
@@ -492,7 +492,7 @@ async function main() {
                     "Total Three-Year Budget: $500,000\n\nPersonnel (60%): $300,000\n- Program Director, STEM Instructors, College Counselors, Career Coordinator\n\nProgram Delivery (25%): $125,000\n- STEM lab equipment and supplies\n- Curriculum materials\n- Summer camp costs\n- Transportation\n- Student incentives and scholarships\n\nPartnerships & Engagement (8%): $40,000\n- Employer partnership development\n- Parent engagement activities\n- Field trips and industry visits\n\nEvaluation (5%): $25,000\n- External evaluator\n- Assessment tools\n- Data management\n\nAdministrative (2%): $10,000",
                 conclusion:
                     "The STEM Futures Initiative will transform educational and career opportunities for 2,000 underserved students, preparing them to succeed in the innovation economy. Our proven model, experienced team, and strong partnerships position us to deliver exceptional outcomes. We are excited to partner with the Department of Education to advance STEM equity and build a diverse pipeline of future scientists, engineers, and technology leaders.",
-                status: false,
+                downloadStatus: false,
             },
         }),
         prisma.proposalDraft.create({
@@ -517,7 +517,7 @@ async function main() {
                     "Total Project Budget: $300,000\n\nPersonnel (70%): $210,000\n- 2 Licensed Clinical Social Workers: $140,000\n- 1 Part-time Psychiatrist: $50,000\n- Diabetes Prevention Program Coordinator: $20,000\n\nProgram Costs (20%): $60,000\n- DPP curriculum and materials: $15,000\n- Mental health assessment tools: $5,000\n- Staff training: $10,000\n- Patient education materials: $8,000\n- Incentives for program completion: $12,000\n- Food for cooking demonstrations: $10,000\n\nEvaluation (5%): $15,000\n- Data analysis and reporting\n- Patient surveys\n- Quality improvement activities\n\nAdministrative (5%): $15,000",
                 conclusion:
                     "This project addresses critical gaps in mental health and preventive care services for vulnerable populations. By integrating evidence-based programs into our comprehensive care model, we will improve health outcomes and reduce health disparities. Community Health Partners has demonstrated strong quality and financial stewardship, making us an excellent partner for Kaiser Permanente's community health mission. Together, we can create healthier, more resilient communities.",
-                status: false,
+                downloadStatus: false,
             },
         }),
     ]);
