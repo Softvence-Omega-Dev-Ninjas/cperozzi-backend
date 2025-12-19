@@ -1,0 +1,15 @@
+model FileDownload {
+  id              String   @id @default(uuid()) @db.Uuid
+  fileName        String   @map("file_name") @db.VarChar
+  filePath        String?  @map("file_path") @db.VarChar
+  fileType        String?  @map("file_type") @db.VarChar
+  email           String?  @db.VarChar
+  emailSent       Boolean  @default(false) @map("email_sent")
+  emailSentAt     DateTime? @map("email_sent_at")
+  downloadedAt    DateTime @default(now()) @map("downloaded_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([email])
+  @@index([downloadedAt])
+  @@map("file_downloads")
+}

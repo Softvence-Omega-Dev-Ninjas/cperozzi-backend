@@ -92,11 +92,11 @@ export class CreateProposalDraftDto {
     conclusion?: string;
 
     @ApiPropertyOptional({
-        description: "Status of the proposal draft (false = draft, true = completed)",
+        description: "Download status of the proposal draft (false = draft, true = completed)",
         example: false,
         default: false,
     })
     @IsOptional()
     @IsBoolean()
-    status?: boolean;
+    downloadStatus?: boolean;
 }

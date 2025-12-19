@@ -12,6 +12,11 @@ import $Result = runtime.Types.Result;
 export type PrismaPromise<T> = $Public.PrismaPromise<T>;
 
 /**
+ * Model FileDownload
+ *
+ */
+export type FileDownload = $Result.DefaultSelection<Prisma.$FileDownloadPayload>;
+/**
  * Model GrantOpportunity
  *
  */
@@ -49,8 +54,8 @@ export type ReadinessScore = $Result.DefaultSelection<Prisma.$ReadinessScorePayl
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more GrantOpportunities
- * const grantOpportunities = await prisma.grantOpportunity.findMany()
+ * // Fetch zero or more FileDownloads
+ * const fileDownloads = await prisma.fileDownload.findMany()
  * ```
  *
  *
@@ -74,8 +79,8 @@ export class PrismaClient<
      * @example
      * ```
      * const prisma = new PrismaClient()
-     * // Fetch zero or more GrantOpportunities
-     * const grantOpportunities = await prisma.grantOpportunity.findMany()
+     * // Fetch zero or more FileDownloads
+     * const fileDownloads = await prisma.fileDownload.findMany()
      * ```
      *
      *
@@ -188,6 +193,16 @@ export class PrismaClient<
             }
         >
     >;
+
+    /**
+     * `prisma.fileDownload`: Exposes CRUD operations for the **FileDownload** model.
+     * Example usage:
+     * ```ts
+     * // Fetch zero or more FileDownloads
+     * const fileDownloads = await prisma.fileDownload.findMany()
+     * ```
+     */
+    get fileDownload(): Prisma.FileDownloadDelegate<ExtArgs, ClientOptions>;
 
     /**
      * `prisma.grantOpportunity`: Exposes CRUD operations for the **GrantOpportunity** model.
@@ -683,6 +698,7 @@ export namespace Prisma {
         : FieldRef<Model, FieldType>;
 
     export const ModelName: {
+        FileDownload: "FileDownload";
         GrantOpportunity: "GrantOpportunity";
         InternalGrantSource: "InternalGrantSource";
         LetterOfIntent: "LetterOfIntent";
@@ -716,6 +732,7 @@ export namespace Prisma {
         };
         meta: {
             modelProps:
+                | "fileDownload"
                 | "grantOpportunity"
                 | "internalGrantSource"
                 | "letterOfIntent"
@@ -725,6 +742,80 @@ export namespace Prisma {
             txIsolationLevel: Prisma.TransactionIsolationLevel;
         };
         model: {
+            FileDownload: {
+                payload: Prisma.$FileDownloadPayload<ExtArgs>;
+                fields: Prisma.FileDownloadFieldRefs;
+                operations: {
+                    findUnique: {
+                        args: Prisma.FileDownloadFindUniqueArgs<ExtArgs>;
+                        result: $Utils.PayloadToResult<Prisma.$FileDownloadPayload> | null;
+                    };
+                    findUniqueOrThrow: {
+                        args: Prisma.FileDownloadFindUniqueOrThrowArgs<ExtArgs>;
+                        result: $Utils.PayloadToResult<Prisma.$FileDownloadPayload>;
+                    };
+                    findFirst: {
+                        args: Prisma.FileDownloadFindFirstArgs<ExtArgs>;
+                        result: $Utils.PayloadToResult<Prisma.$FileDownloadPayload> | null;
+                    };
+                    findFirstOrThrow: {
+                        args: Prisma.FileDownloadFindFirstOrThrowArgs<ExtArgs>;
+                        result: $Utils.PayloadToResult<Prisma.$FileDownloadPayload>;
+                    };
+                    findMany: {
+                        args: Prisma.FileDownloadFindManyArgs<ExtArgs>;
+                        result: $Utils.PayloadToResult<Prisma.$FileDownloadPayload>[];
+                    };
+                    create: {
+                        args: Prisma.FileDownloadCreateArgs<ExtArgs>;
+                        result: $Utils.PayloadToResult<Prisma.$FileDownloadPayload>;
+                    };
+                    createMany: {
+                        args: Prisma.FileDownloadCreateManyArgs<ExtArgs>;
+                        result: BatchPayload;
+                    };
+                    createManyAndReturn: {
+                        args: Prisma.FileDownloadCreateManyAndReturnArgs<ExtArgs>;
+                        result: $Utils.PayloadToResult<Prisma.$FileDownloadPayload>[];
+                    };
+                    delete: {
+                        args: Prisma.FileDownloadDeleteArgs<ExtArgs>;
+                        result: $Utils.PayloadToResult<Prisma.$FileDownloadPayload>;
+                    };
+                    update: {
+                        args: Prisma.FileDownloadUpdateArgs<ExtArgs>;
+                        result: $Utils.PayloadToResult<Prisma.$FileDownloadPayload>;
+                    };
+                    deleteMany: {
+                        args: Prisma.FileDownloadDeleteManyArgs<ExtArgs>;
+                        result: BatchPayload;
+                    };
+                    updateMany: {
+                        args: Prisma.FileDownloadUpdateManyArgs<ExtArgs>;
+                        result: BatchPayload;
+                    };
+                    updateManyAndReturn: {
+                        args: Prisma.FileDownloadUpdateManyAndReturnArgs<ExtArgs>;
+                        result: $Utils.PayloadToResult<Prisma.$FileDownloadPayload>[];
+                    };
+                    upsert: {
+                        args: Prisma.FileDownloadUpsertArgs<ExtArgs>;
+                        result: $Utils.PayloadToResult<Prisma.$FileDownloadPayload>;
+                    };
+                    aggregate: {
+                        args: Prisma.FileDownloadAggregateArgs<ExtArgs>;
+                        result: $Utils.Optional<AggregateFileDownload>;
+                    };
+                    groupBy: {
+                        args: Prisma.FileDownloadGroupByArgs<ExtArgs>;
+                        result: $Utils.Optional<FileDownloadGroupByOutputType>[];
+                    };
+                    count: {
+                        args: Prisma.FileDownloadCountArgs<ExtArgs>;
+                        result: $Utils.Optional<FileDownloadCountAggregateOutputType> | number;
+                    };
+                };
+            };
             GrantOpportunity: {
                 payload: Prisma.$GrantOpportunityPayload<ExtArgs>;
                 fields: Prisma.GrantOpportunityFieldRefs;
@@ -1271,6 +1362,7 @@ export namespace Prisma {
         omit?: Prisma.GlobalOmitConfig;
     }
     export type GlobalOmitConfig = {
+        fileDownload?: FileDownloadOmit;
         grantOpportunity?: GrantOpportunityOmit;
         internalGrantSource?: InternalGrantSourceOmit;
         letterOfIntent?: LetterOfIntentOmit;
@@ -1526,6 +1618,1234 @@ export namespace Prisma {
     /**
      * Models
      */
+
+    /**
+     * Model FileDownload
+     */
+
+    export type AggregateFileDownload = {
+        _count: FileDownloadCountAggregateOutputType | null;
+        _min: FileDownloadMinAggregateOutputType | null;
+        _max: FileDownloadMaxAggregateOutputType | null;
+    };
+
+    export type FileDownloadMinAggregateOutputType = {
+        id: string | null;
+        fileName: string | null;
+        filePath: string | null;
+        fileType: string | null;
+        email: string | null;
+        emailSent: boolean | null;
+        emailSentAt: Date | null;
+        downloadedAt: Date | null;
+        createdAt: Date | null;
+    };
+
+    export type FileDownloadMaxAggregateOutputType = {
+        id: string | null;
+        fileName: string | null;
+        filePath: string | null;
+        fileType: string | null;
+        email: string | null;
+        emailSent: boolean | null;
+        emailSentAt: Date | null;
+        downloadedAt: Date | null;
+        createdAt: Date | null;
+    };
+
+    export type FileDownloadCountAggregateOutputType = {
+        id: number;
+        fileName: number;
+        filePath: number;
+        fileType: number;
+        email: number;
+        emailSent: number;
+        emailSentAt: number;
+        downloadedAt: number;
+        createdAt: number;
+        _all: number;
+    };
+
+    export type FileDownloadMinAggregateInputType = {
+        id?: true;
+        fileName?: true;
+        filePath?: true;
+        fileType?: true;
+        email?: true;
+        emailSent?: true;
+        emailSentAt?: true;
+        downloadedAt?: true;
+        createdAt?: true;
+    };
+
+    export type FileDownloadMaxAggregateInputType = {
+        id?: true;
+        fileName?: true;
+        filePath?: true;
+        fileType?: true;
+        email?: true;
+        emailSent?: true;
+        emailSentAt?: true;
+        downloadedAt?: true;
+        createdAt?: true;
+    };
+
+    export type FileDownloadCountAggregateInputType = {
+        id?: true;
+        fileName?: true;
+        filePath?: true;
+        fileType?: true;
+        email?: true;
+        emailSent?: true;
+        emailSentAt?: true;
+        downloadedAt?: true;
+        createdAt?: true;
+        _all?: true;
+    };
+
+    export type FileDownloadAggregateArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Filter which FileDownload to aggregate.
+         */
+        where?: FileDownloadWhereInput;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+         *
+         * Determine the order of FileDownloads to fetch.
+         */
+        orderBy?: FileDownloadOrderByWithRelationInput | FileDownloadOrderByWithRelationInput[];
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+         *
+         * Sets the start position
+         */
+        cursor?: FileDownloadWhereUniqueInput;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+         *
+         * Take `±n` FileDownloads from the position of the cursor.
+         */
+        take?: number;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+         *
+         * Skip the first `n` FileDownloads.
+         */
+        skip?: number;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+         *
+         * Count returned FileDownloads
+         **/
+        _count?: true | FileDownloadCountAggregateInputType;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+         *
+         * Select which fields to find the minimum value
+         **/
+        _min?: FileDownloadMinAggregateInputType;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+         *
+         * Select which fields to find the maximum value
+         **/
+        _max?: FileDownloadMaxAggregateInputType;
+    };
+
+    export type GetFileDownloadAggregateType<T extends FileDownloadAggregateArgs> = {
+        [P in keyof T & keyof AggregateFileDownload]: P extends "_count" | "count"
+            ? T[P] extends true
+                ? number
+                : GetScalarType<T[P], AggregateFileDownload[P]>
+            : GetScalarType<T[P], AggregateFileDownload[P]>;
+    };
+
+    export type FileDownloadGroupByArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        where?: FileDownloadWhereInput;
+        orderBy?:
+            | FileDownloadOrderByWithAggregationInput
+            | FileDownloadOrderByWithAggregationInput[];
+        by: FileDownloadScalarFieldEnum[] | FileDownloadScalarFieldEnum;
+        having?: FileDownloadScalarWhereWithAggregatesInput;
+        take?: number;
+        skip?: number;
+        _count?: FileDownloadCountAggregateInputType | true;
+        _min?: FileDownloadMinAggregateInputType;
+        _max?: FileDownloadMaxAggregateInputType;
+    };
+
+    export type FileDownloadGroupByOutputType = {
+        id: string;
+        fileName: string;
+        filePath: string | null;
+        fileType: string | null;
+        email: string | null;
+        emailSent: boolean;
+        emailSentAt: Date | null;
+        downloadedAt: Date;
+        createdAt: Date;
+        _count: FileDownloadCountAggregateOutputType | null;
+        _min: FileDownloadMinAggregateOutputType | null;
+        _max: FileDownloadMaxAggregateOutputType | null;
+    };
+
+    type GetFileDownloadGroupByPayload<T extends FileDownloadGroupByArgs> = Prisma.PrismaPromise<
+        Array<
+            PickEnumerable<FileDownloadGroupByOutputType, T["by"]> & {
+                [P in keyof T & keyof FileDownloadGroupByOutputType]: P extends "_count"
+                    ? T[P] extends boolean
+                        ? number
+                        : GetScalarType<T[P], FileDownloadGroupByOutputType[P]>
+                    : GetScalarType<T[P], FileDownloadGroupByOutputType[P]>;
+            }
+        >
+    >;
+
+    export type FileDownloadSelect<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = $Extensions.GetSelect<
+        {
+            id?: boolean;
+            fileName?: boolean;
+            filePath?: boolean;
+            fileType?: boolean;
+            email?: boolean;
+            emailSent?: boolean;
+            emailSentAt?: boolean;
+            downloadedAt?: boolean;
+            createdAt?: boolean;
+        },
+        ExtArgs["result"]["fileDownload"]
+    >;
+
+    export type FileDownloadSelectCreateManyAndReturn<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = $Extensions.GetSelect<
+        {
+            id?: boolean;
+            fileName?: boolean;
+            filePath?: boolean;
+            fileType?: boolean;
+            email?: boolean;
+            emailSent?: boolean;
+            emailSentAt?: boolean;
+            downloadedAt?: boolean;
+            createdAt?: boolean;
+        },
+        ExtArgs["result"]["fileDownload"]
+    >;
+
+    export type FileDownloadSelectUpdateManyAndReturn<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = $Extensions.GetSelect<
+        {
+            id?: boolean;
+            fileName?: boolean;
+            filePath?: boolean;
+            fileType?: boolean;
+            email?: boolean;
+            emailSent?: boolean;
+            emailSentAt?: boolean;
+            downloadedAt?: boolean;
+            createdAt?: boolean;
+        },
+        ExtArgs["result"]["fileDownload"]
+    >;
+
+    export type FileDownloadSelectScalar = {
+        id?: boolean;
+        fileName?: boolean;
+        filePath?: boolean;
+        fileType?: boolean;
+        email?: boolean;
+        emailSent?: boolean;
+        emailSentAt?: boolean;
+        downloadedAt?: boolean;
+        createdAt?: boolean;
+    };
+
+    export type FileDownloadOmit<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = $Extensions.GetOmit<
+        | "id"
+        | "fileName"
+        | "filePath"
+        | "fileType"
+        | "email"
+        | "emailSent"
+        | "emailSentAt"
+        | "downloadedAt"
+        | "createdAt",
+        ExtArgs["result"]["fileDownload"]
+    >;
+
+    export type $FileDownloadPayload<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        name: "FileDownload";
+        objects: {};
+        scalars: $Extensions.GetPayloadResult<
+            {
+                id: string;
+                fileName: string;
+                filePath: string | null;
+                fileType: string | null;
+                email: string | null;
+                emailSent: boolean;
+                emailSentAt: Date | null;
+                downloadedAt: Date;
+                createdAt: Date;
+            },
+            ExtArgs["result"]["fileDownload"]
+        >;
+        composites: {};
+    };
+
+    type FileDownloadGetPayload<S extends boolean | null | undefined | FileDownloadDefaultArgs> =
+        $Result.GetResult<Prisma.$FileDownloadPayload, S>;
+
+    type FileDownloadCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+        Omit<FileDownloadFindManyArgs, "select" | "include" | "distinct" | "omit"> & {
+            select?: FileDownloadCountAggregateInputType | true;
+        };
+
+    export interface FileDownloadDelegate<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+        GlobalOmitOptions = {},
+    > {
+        [K: symbol]: {
+            types: Prisma.TypeMap<ExtArgs>["model"]["FileDownload"];
+            meta: { name: "FileDownload" };
+        };
+        /**
+         * Find zero or one FileDownload that matches the filter.
+         * @param {FileDownloadFindUniqueArgs} args - Arguments to find a FileDownload
+         * @example
+         * // Get one FileDownload
+         * const fileDownload = await prisma.fileDownload.findUnique({
+         *   where: {
+         *     // ... provide filter here
+         *   }
+         * })
+         */
+        findUnique<T extends FileDownloadFindUniqueArgs>(
+            args: SelectSubset<T, FileDownloadFindUniqueArgs<ExtArgs>>,
+        ): Prisma__FileDownloadClient<
+            $Result.GetResult<
+                Prisma.$FileDownloadPayload<ExtArgs>,
+                T,
+                "findUnique",
+                GlobalOmitOptions
+            > | null,
+            null,
+            ExtArgs,
+            GlobalOmitOptions
+        >;
+
+        /**
+         * Find one FileDownload that matches the filter or throw an error with `error.code='P2025'`
+         * if no matches were found.
+         * @param {FileDownloadFindUniqueOrThrowArgs} args - Arguments to find a FileDownload
+         * @example
+         * // Get one FileDownload
+         * const fileDownload = await prisma.fileDownload.findUniqueOrThrow({
+         *   where: {
+         *     // ... provide filter here
+         *   }
+         * })
+         */
+        findUniqueOrThrow<T extends FileDownloadFindUniqueOrThrowArgs>(
+            args: SelectSubset<T, FileDownloadFindUniqueOrThrowArgs<ExtArgs>>,
+        ): Prisma__FileDownloadClient<
+            $Result.GetResult<
+                Prisma.$FileDownloadPayload<ExtArgs>,
+                T,
+                "findUniqueOrThrow",
+                GlobalOmitOptions
+            >,
+            never,
+            ExtArgs,
+            GlobalOmitOptions
+        >;
+
+        /**
+         * Find the first FileDownload that matches the filter.
+         * Note, that providing `undefined` is treated as the value not being there.
+         * Read more here: https://pris.ly/d/null-undefined
+         * @param {FileDownloadFindFirstArgs} args - Arguments to find a FileDownload
+         * @example
+         * // Get one FileDownload
+         * const fileDownload = await prisma.fileDownload.findFirst({
+         *   where: {
+         *     // ... provide filter here
+         *   }
+         * })
+         */
+        findFirst<T extends FileDownloadFindFirstArgs>(
+            args?: SelectSubset<T, FileDownloadFindFirstArgs<ExtArgs>>,
+        ): Prisma__FileDownloadClient<
+            $Result.GetResult<
+                Prisma.$FileDownloadPayload<ExtArgs>,
+                T,
+                "findFirst",
+                GlobalOmitOptions
+            > | null,
+            null,
+            ExtArgs,
+            GlobalOmitOptions
+        >;
+
+        /**
+         * Find the first FileDownload that matches the filter or
+         * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+         * Note, that providing `undefined` is treated as the value not being there.
+         * Read more here: https://pris.ly/d/null-undefined
+         * @param {FileDownloadFindFirstOrThrowArgs} args - Arguments to find a FileDownload
+         * @example
+         * // Get one FileDownload
+         * const fileDownload = await prisma.fileDownload.findFirstOrThrow({
+         *   where: {
+         *     // ... provide filter here
+         *   }
+         * })
+         */
+        findFirstOrThrow<T extends FileDownloadFindFirstOrThrowArgs>(
+            args?: SelectSubset<T, FileDownloadFindFirstOrThrowArgs<ExtArgs>>,
+        ): Prisma__FileDownloadClient<
+            $Result.GetResult<
+                Prisma.$FileDownloadPayload<ExtArgs>,
+                T,
+                "findFirstOrThrow",
+                GlobalOmitOptions
+            >,
+            never,
+            ExtArgs,
+            GlobalOmitOptions
+        >;
+
+        /**
+         * Find zero or more FileDownloads that matches the filter.
+         * Note, that providing `undefined` is treated as the value not being there.
+         * Read more here: https://pris.ly/d/null-undefined
+         * @param {FileDownloadFindManyArgs} args - Arguments to filter and select certain fields only.
+         * @example
+         * // Get all FileDownloads
+         * const fileDownloads = await prisma.fileDownload.findMany()
+         *
+         * // Get first 10 FileDownloads
+         * const fileDownloads = await prisma.fileDownload.findMany({ take: 10 })
+         *
+         * // Only select the `id`
+         * const fileDownloadWithIdOnly = await prisma.fileDownload.findMany({ select: { id: true } })
+         *
+         */
+        findMany<T extends FileDownloadFindManyArgs>(
+            args?: SelectSubset<T, FileDownloadFindManyArgs<ExtArgs>>,
+        ): Prisma.PrismaPromise<
+            $Result.GetResult<
+                Prisma.$FileDownloadPayload<ExtArgs>,
+                T,
+                "findMany",
+                GlobalOmitOptions
+            >
+        >;
+
+        /**
+         * Create a FileDownload.
+         * @param {FileDownloadCreateArgs} args - Arguments to create a FileDownload.
+         * @example
+         * // Create one FileDownload
+         * const FileDownload = await prisma.fileDownload.create({
+         *   data: {
+         *     // ... data to create a FileDownload
+         *   }
+         * })
+         *
+         */
+        create<T extends FileDownloadCreateArgs>(
+            args: SelectSubset<T, FileDownloadCreateArgs<ExtArgs>>,
+        ): Prisma__FileDownloadClient<
+            $Result.GetResult<Prisma.$FileDownloadPayload<ExtArgs>, T, "create", GlobalOmitOptions>,
+            never,
+            ExtArgs,
+            GlobalOmitOptions
+        >;
+
+        /**
+         * Create many FileDownloads.
+         * @param {FileDownloadCreateManyArgs} args - Arguments to create many FileDownloads.
+         * @example
+         * // Create many FileDownloads
+         * const fileDownload = await prisma.fileDownload.createMany({
+         *   data: [
+         *     // ... provide data here
+         *   ]
+         * })
+         *
+         */
+        createMany<T extends FileDownloadCreateManyArgs>(
+            args?: SelectSubset<T, FileDownloadCreateManyArgs<ExtArgs>>,
+        ): Prisma.PrismaPromise<BatchPayload>;
+
+        /**
+         * Create many FileDownloads and returns the data saved in the database.
+         * @param {FileDownloadCreateManyAndReturnArgs} args - Arguments to create many FileDownloads.
+         * @example
+         * // Create many FileDownloads
+         * const fileDownload = await prisma.fileDownload.createManyAndReturn({
+         *   data: [
+         *     // ... provide data here
+         *   ]
+         * })
+         *
+         * // Create many FileDownloads and only return the `id`
+         * const fileDownloadWithIdOnly = await prisma.fileDownload.createManyAndReturn({
+         *   select: { id: true },
+         *   data: [
+         *     // ... provide data here
+         *   ]
+         * })
+         * Note, that providing `undefined` is treated as the value not being there.
+         * Read more here: https://pris.ly/d/null-undefined
+         *
+         */
+        createManyAndReturn<T extends FileDownloadCreateManyAndReturnArgs>(
+            args?: SelectSubset<T, FileDownloadCreateManyAndReturnArgs<ExtArgs>>,
+        ): Prisma.PrismaPromise<
+            $Result.GetResult<
+                Prisma.$FileDownloadPayload<ExtArgs>,
+                T,
+                "createManyAndReturn",
+                GlobalOmitOptions
+            >
+        >;
+
+        /**
+         * Delete a FileDownload.
+         * @param {FileDownloadDeleteArgs} args - Arguments to delete one FileDownload.
+         * @example
+         * // Delete one FileDownload
+         * const FileDownload = await prisma.fileDownload.delete({
+         *   where: {
+         *     // ... filter to delete one FileDownload
+         *   }
+         * })
+         *
+         */
+        delete<T extends FileDownloadDeleteArgs>(
+            args: SelectSubset<T, FileDownloadDeleteArgs<ExtArgs>>,
+        ): Prisma__FileDownloadClient<
+            $Result.GetResult<Prisma.$FileDownloadPayload<ExtArgs>, T, "delete", GlobalOmitOptions>,
+            never,
+            ExtArgs,
+            GlobalOmitOptions
+        >;
+
+        /**
+         * Update one FileDownload.
+         * @param {FileDownloadUpdateArgs} args - Arguments to update one FileDownload.
+         * @example
+         * // Update one FileDownload
+         * const fileDownload = await prisma.fileDownload.update({
+         *   where: {
+         *     // ... provide filter here
+         *   },
+         *   data: {
+         *     // ... provide data here
+         *   }
+         * })
+         *
+         */
+        update<T extends FileDownloadUpdateArgs>(
+            args: SelectSubset<T, FileDownloadUpdateArgs<ExtArgs>>,
+        ): Prisma__FileDownloadClient<
+            $Result.GetResult<Prisma.$FileDownloadPayload<ExtArgs>, T, "update", GlobalOmitOptions>,
+            never,
+            ExtArgs,
+            GlobalOmitOptions
+        >;
+
+        /**
+         * Delete zero or more FileDownloads.
+         * @param {FileDownloadDeleteManyArgs} args - Arguments to filter FileDownloads to delete.
+         * @example
+         * // Delete a few FileDownloads
+         * const { count } = await prisma.fileDownload.deleteMany({
+         *   where: {
+         *     // ... provide filter here
+         *   }
+         * })
+         *
+         */
+        deleteMany<T extends FileDownloadDeleteManyArgs>(
+            args?: SelectSubset<T, FileDownloadDeleteManyArgs<ExtArgs>>,
+        ): Prisma.PrismaPromise<BatchPayload>;
+
+        /**
+         * Update zero or more FileDownloads.
+         * Note, that providing `undefined` is treated as the value not being there.
+         * Read more here: https://pris.ly/d/null-undefined
+         * @param {FileDownloadUpdateManyArgs} args - Arguments to update one or more rows.
+         * @example
+         * // Update many FileDownloads
+         * const fileDownload = await prisma.fileDownload.updateMany({
+         *   where: {
+         *     // ... provide filter here
+         *   },
+         *   data: {
+         *     // ... provide data here
+         *   }
+         * })
+         *
+         */
+        updateMany<T extends FileDownloadUpdateManyArgs>(
+            args: SelectSubset<T, FileDownloadUpdateManyArgs<ExtArgs>>,
+        ): Prisma.PrismaPromise<BatchPayload>;
+
+        /**
+         * Update zero or more FileDownloads and returns the data updated in the database.
+         * @param {FileDownloadUpdateManyAndReturnArgs} args - Arguments to update many FileDownloads.
+         * @example
+         * // Update many FileDownloads
+         * const fileDownload = await prisma.fileDownload.updateManyAndReturn({
+         *   where: {
+         *     // ... provide filter here
+         *   },
+         *   data: [
+         *     // ... provide data here
+         *   ]
+         * })
+         *
+         * // Update zero or more FileDownloads and only return the `id`
+         * const fileDownloadWithIdOnly = await prisma.fileDownload.updateManyAndReturn({
+         *   select: { id: true },
+         *   where: {
+         *     // ... provide filter here
+         *   },
+         *   data: [
+         *     // ... provide data here
+         *   ]
+         * })
+         * Note, that providing `undefined` is treated as the value not being there.
+         * Read more here: https://pris.ly/d/null-undefined
+         *
+         */
+        updateManyAndReturn<T extends FileDownloadUpdateManyAndReturnArgs>(
+            args: SelectSubset<T, FileDownloadUpdateManyAndReturnArgs<ExtArgs>>,
+        ): Prisma.PrismaPromise<
+            $Result.GetResult<
+                Prisma.$FileDownloadPayload<ExtArgs>,
+                T,
+                "updateManyAndReturn",
+                GlobalOmitOptions
+            >
+        >;
+
+        /**
+         * Create or update one FileDownload.
+         * @param {FileDownloadUpsertArgs} args - Arguments to update or create a FileDownload.
+         * @example
+         * // Update or create a FileDownload
+         * const fileDownload = await prisma.fileDownload.upsert({
+         *   create: {
+         *     // ... data to create a FileDownload
+         *   },
+         *   update: {
+         *     // ... in case it already exists, update
+         *   },
+         *   where: {
+         *     // ... the filter for the FileDownload we want to update
+         *   }
+         * })
+         */
+        upsert<T extends FileDownloadUpsertArgs>(
+            args: SelectSubset<T, FileDownloadUpsertArgs<ExtArgs>>,
+        ): Prisma__FileDownloadClient<
+            $Result.GetResult<Prisma.$FileDownloadPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>,
+            never,
+            ExtArgs,
+            GlobalOmitOptions
+        >;
+
+        /**
+         * Count the number of FileDownloads.
+         * Note, that providing `undefined` is treated as the value not being there.
+         * Read more here: https://pris.ly/d/null-undefined
+         * @param {FileDownloadCountArgs} args - Arguments to filter FileDownloads to count.
+         * @example
+         * // Count the number of FileDownloads
+         * const count = await prisma.fileDownload.count({
+         *   where: {
+         *     // ... the filter for the FileDownloads we want to count
+         *   }
+         * })
+         **/
+        count<T extends FileDownloadCountArgs>(
+            args?: Subset<T, FileDownloadCountArgs>,
+        ): Prisma.PrismaPromise<
+            T extends $Utils.Record<"select", any>
+                ? T["select"] extends true
+                    ? number
+                    : GetScalarType<T["select"], FileDownloadCountAggregateOutputType>
+                : number
+        >;
+
+        /**
+         * Allows you to perform aggregations operations on a FileDownload.
+         * Note, that providing `undefined` is treated as the value not being there.
+         * Read more here: https://pris.ly/d/null-undefined
+         * @param {FileDownloadAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+         * @example
+         * // Ordered by age ascending
+         * // Where email contains prisma.io
+         * // Limited to the 10 users
+         * const aggregations = await prisma.user.aggregate({
+         *   _avg: {
+         *     age: true,
+         *   },
+         *   where: {
+         *     email: {
+         *       contains: "prisma.io",
+         *     },
+         *   },
+         *   orderBy: {
+         *     age: "asc",
+         *   },
+         *   take: 10,
+         * })
+         **/
+        aggregate<T extends FileDownloadAggregateArgs>(
+            args: Subset<T, FileDownloadAggregateArgs>,
+        ): Prisma.PrismaPromise<GetFileDownloadAggregateType<T>>;
+
+        /**
+         * Group by FileDownload.
+         * Note, that providing `undefined` is treated as the value not being there.
+         * Read more here: https://pris.ly/d/null-undefined
+         * @param {FileDownloadGroupByArgs} args - Group by arguments.
+         * @example
+         * // Group by city, order by createdAt, get count
+         * const result = await prisma.user.groupBy({
+         *   by: ['city', 'createdAt'],
+         *   orderBy: {
+         *     createdAt: true
+         *   },
+         *   _count: {
+         *     _all: true
+         *   },
+         * })
+         *
+         **/
+        groupBy<
+            T extends FileDownloadGroupByArgs,
+            HasSelectOrTake extends Or<Extends<"skip", Keys<T>>, Extends<"take", Keys<T>>>,
+            OrderByArg extends True extends HasSelectOrTake
+                ? { orderBy: FileDownloadGroupByArgs["orderBy"] }
+                : { orderBy?: FileDownloadGroupByArgs["orderBy"] },
+            OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T["orderBy"]>>>,
+            ByFields extends MaybeTupleToUnion<T["by"]>,
+            ByValid extends Has<ByFields, OrderFields>,
+            HavingFields extends GetHavingFields<T["having"]>,
+            HavingValid extends Has<ByFields, HavingFields>,
+            ByEmpty extends T["by"] extends never[] ? True : False,
+            InputErrors extends ByEmpty extends True
+                ? `Error: "by" must not be empty.`
+                : HavingValid extends False
+                  ? {
+                        [P in HavingFields]: P extends ByFields
+                            ? never
+                            : P extends string
+                              ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+                              : [Error, "Field ", P, ` in "having" needs to be provided in "by"`];
+                    }[HavingFields]
+                  : "take" extends Keys<T>
+                    ? "orderBy" extends Keys<T>
+                        ? ByValid extends True
+                            ? {}
+                            : {
+                                  [P in OrderFields]: P extends ByFields
+                                      ? never
+                                      : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+                              }[OrderFields]
+                        : 'Error: If you provide "take", you also need to provide "orderBy"'
+                    : "skip" extends Keys<T>
+                      ? "orderBy" extends Keys<T>
+                          ? ByValid extends True
+                              ? {}
+                              : {
+                                    [P in OrderFields]: P extends ByFields
+                                        ? never
+                                        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+                                }[OrderFields]
+                          : 'Error: If you provide "skip", you also need to provide "orderBy"'
+                      : ByValid extends True
+                        ? {}
+                        : {
+                              [P in OrderFields]: P extends ByFields
+                                  ? never
+                                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+                          }[OrderFields],
+        >(
+            args: SubsetIntersection<T, FileDownloadGroupByArgs, OrderByArg> & InputErrors,
+        ): {} extends InputErrors
+            ? GetFileDownloadGroupByPayload<T>
+            : Prisma.PrismaPromise<InputErrors>;
+        /**
+         * Fields of the FileDownload model
+         */
+        readonly fields: FileDownloadFieldRefs;
+    }
+
+    /**
+     * The delegate class that acts as a "Promise-like" for FileDownload.
+     * Why is this prefixed with `Prisma__`?
+     * Because we want to prevent naming conflicts as mentioned in
+     * https://github.com/prisma/prisma-client-js/issues/707
+     */
+    export interface Prisma__FileDownloadClient<
+        T,
+        Null = never,
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+        GlobalOmitOptions = {},
+    > extends Prisma.PrismaPromise<T> {
+        readonly [Symbol.toStringTag]: "PrismaPromise";
+        /**
+         * Attaches callbacks for the resolution and/or rejection of the Promise.
+         * @param onfulfilled The callback to execute when the Promise is resolved.
+         * @param onrejected The callback to execute when the Promise is rejected.
+         * @returns A Promise for the completion of which ever callback is executed.
+         */
+        then<TResult1 = T, TResult2 = never>(
+            onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null,
+            onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null,
+        ): $Utils.JsPromise<TResult1 | TResult2>;
+        /**
+         * Attaches a callback for only the rejection of the Promise.
+         * @param onrejected The callback to execute when the Promise is rejected.
+         * @returns A Promise for the completion of the callback.
+         */
+        catch<TResult = never>(
+            onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null,
+        ): $Utils.JsPromise<T | TResult>;
+        /**
+         * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+         * resolved value cannot be modified from the callback.
+         * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+         * @returns A Promise for the completion of the callback.
+         */
+        finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+    }
+
+    /**
+     * Fields of the FileDownload model
+     */
+    interface FileDownloadFieldRefs {
+        readonly id: FieldRef<"FileDownload", "String">;
+        readonly fileName: FieldRef<"FileDownload", "String">;
+        readonly filePath: FieldRef<"FileDownload", "String">;
+        readonly fileType: FieldRef<"FileDownload", "String">;
+        readonly email: FieldRef<"FileDownload", "String">;
+        readonly emailSent: FieldRef<"FileDownload", "Boolean">;
+        readonly emailSentAt: FieldRef<"FileDownload", "DateTime">;
+        readonly downloadedAt: FieldRef<"FileDownload", "DateTime">;
+        readonly createdAt: FieldRef<"FileDownload", "DateTime">;
+    }
+
+    // Custom InputTypes
+    /**
+     * FileDownload findUnique
+     */
+    export type FileDownloadFindUniqueArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Select specific fields to fetch from the FileDownload
+         */
+        select?: FileDownloadSelect<ExtArgs> | null;
+        /**
+         * Omit specific fields from the FileDownload
+         */
+        omit?: FileDownloadOmit<ExtArgs> | null;
+        /**
+         * Filter, which FileDownload to fetch.
+         */
+        where: FileDownloadWhereUniqueInput;
+    };
+
+    /**
+     * FileDownload findUniqueOrThrow
+     */
+    export type FileDownloadFindUniqueOrThrowArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Select specific fields to fetch from the FileDownload
+         */
+        select?: FileDownloadSelect<ExtArgs> | null;
+        /**
+         * Omit specific fields from the FileDownload
+         */
+        omit?: FileDownloadOmit<ExtArgs> | null;
+        /**
+         * Filter, which FileDownload to fetch.
+         */
+        where: FileDownloadWhereUniqueInput;
+    };
+
+    /**
+     * FileDownload findFirst
+     */
+    export type FileDownloadFindFirstArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Select specific fields to fetch from the FileDownload
+         */
+        select?: FileDownloadSelect<ExtArgs> | null;
+        /**
+         * Omit specific fields from the FileDownload
+         */
+        omit?: FileDownloadOmit<ExtArgs> | null;
+        /**
+         * Filter, which FileDownload to fetch.
+         */
+        where?: FileDownloadWhereInput;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+         *
+         * Determine the order of FileDownloads to fetch.
+         */
+        orderBy?: FileDownloadOrderByWithRelationInput | FileDownloadOrderByWithRelationInput[];
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+         *
+         * Sets the position for searching for FileDownloads.
+         */
+        cursor?: FileDownloadWhereUniqueInput;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+         *
+         * Take `±n` FileDownloads from the position of the cursor.
+         */
+        take?: number;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+         *
+         * Skip the first `n` FileDownloads.
+         */
+        skip?: number;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+         *
+         * Filter by unique combinations of FileDownloads.
+         */
+        distinct?: FileDownloadScalarFieldEnum | FileDownloadScalarFieldEnum[];
+    };
+
+    /**
+     * FileDownload findFirstOrThrow
+     */
+    export type FileDownloadFindFirstOrThrowArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Select specific fields to fetch from the FileDownload
+         */
+        select?: FileDownloadSelect<ExtArgs> | null;
+        /**
+         * Omit specific fields from the FileDownload
+         */
+        omit?: FileDownloadOmit<ExtArgs> | null;
+        /**
+         * Filter, which FileDownload to fetch.
+         */
+        where?: FileDownloadWhereInput;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+         *
+         * Determine the order of FileDownloads to fetch.
+         */
+        orderBy?: FileDownloadOrderByWithRelationInput | FileDownloadOrderByWithRelationInput[];
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+         *
+         * Sets the position for searching for FileDownloads.
+         */
+        cursor?: FileDownloadWhereUniqueInput;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+         *
+         * Take `±n` FileDownloads from the position of the cursor.
+         */
+        take?: number;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+         *
+         * Skip the first `n` FileDownloads.
+         */
+        skip?: number;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+         *
+         * Filter by unique combinations of FileDownloads.
+         */
+        distinct?: FileDownloadScalarFieldEnum | FileDownloadScalarFieldEnum[];
+    };
+
+    /**
+     * FileDownload findMany
+     */
+    export type FileDownloadFindManyArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Select specific fields to fetch from the FileDownload
+         */
+        select?: FileDownloadSelect<ExtArgs> | null;
+        /**
+         * Omit specific fields from the FileDownload
+         */
+        omit?: FileDownloadOmit<ExtArgs> | null;
+        /**
+         * Filter, which FileDownloads to fetch.
+         */
+        where?: FileDownloadWhereInput;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+         *
+         * Determine the order of FileDownloads to fetch.
+         */
+        orderBy?: FileDownloadOrderByWithRelationInput | FileDownloadOrderByWithRelationInput[];
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+         *
+         * Sets the position for listing FileDownloads.
+         */
+        cursor?: FileDownloadWhereUniqueInput;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+         *
+         * Take `±n` FileDownloads from the position of the cursor.
+         */
+        take?: number;
+        /**
+         * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+         *
+         * Skip the first `n` FileDownloads.
+         */
+        skip?: number;
+        distinct?: FileDownloadScalarFieldEnum | FileDownloadScalarFieldEnum[];
+    };
+
+    /**
+     * FileDownload create
+     */
+    export type FileDownloadCreateArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Select specific fields to fetch from the FileDownload
+         */
+        select?: FileDownloadSelect<ExtArgs> | null;
+        /**
+         * Omit specific fields from the FileDownload
+         */
+        omit?: FileDownloadOmit<ExtArgs> | null;
+        /**
+         * The data needed to create a FileDownload.
+         */
+        data: XOR<FileDownloadCreateInput, FileDownloadUncheckedCreateInput>;
+    };
+
+    /**
+     * FileDownload createMany
+     */
+    export type FileDownloadCreateManyArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * The data used to create many FileDownloads.
+         */
+        data: FileDownloadCreateManyInput | FileDownloadCreateManyInput[];
+        skipDuplicates?: boolean;
+    };
+
+    /**
+     * FileDownload createManyAndReturn
+     */
+    export type FileDownloadCreateManyAndReturnArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Select specific fields to fetch from the FileDownload
+         */
+        select?: FileDownloadSelectCreateManyAndReturn<ExtArgs> | null;
+        /**
+         * Omit specific fields from the FileDownload
+         */
+        omit?: FileDownloadOmit<ExtArgs> | null;
+        /**
+         * The data used to create many FileDownloads.
+         */
+        data: FileDownloadCreateManyInput | FileDownloadCreateManyInput[];
+        skipDuplicates?: boolean;
+    };
+
+    /**
+     * FileDownload update
+     */
+    export type FileDownloadUpdateArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Select specific fields to fetch from the FileDownload
+         */
+        select?: FileDownloadSelect<ExtArgs> | null;
+        /**
+         * Omit specific fields from the FileDownload
+         */
+        omit?: FileDownloadOmit<ExtArgs> | null;
+        /**
+         * The data needed to update a FileDownload.
+         */
+        data: XOR<FileDownloadUpdateInput, FileDownloadUncheckedUpdateInput>;
+        /**
+         * Choose, which FileDownload to update.
+         */
+        where: FileDownloadWhereUniqueInput;
+    };
+
+    /**
+     * FileDownload updateMany
+     */
+    export type FileDownloadUpdateManyArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * The data used to update FileDownloads.
+         */
+        data: XOR<FileDownloadUpdateManyMutationInput, FileDownloadUncheckedUpdateManyInput>;
+        /**
+         * Filter which FileDownloads to update
+         */
+        where?: FileDownloadWhereInput;
+        /**
+         * Limit how many FileDownloads to update.
+         */
+        limit?: number;
+    };
+
+    /**
+     * FileDownload updateManyAndReturn
+     */
+    export type FileDownloadUpdateManyAndReturnArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Select specific fields to fetch from the FileDownload
+         */
+        select?: FileDownloadSelectUpdateManyAndReturn<ExtArgs> | null;
+        /**
+         * Omit specific fields from the FileDownload
+         */
+        omit?: FileDownloadOmit<ExtArgs> | null;
+        /**
+         * The data used to update FileDownloads.
+         */
+        data: XOR<FileDownloadUpdateManyMutationInput, FileDownloadUncheckedUpdateManyInput>;
+        /**
+         * Filter which FileDownloads to update
+         */
+        where?: FileDownloadWhereInput;
+        /**
+         * Limit how many FileDownloads to update.
+         */
+        limit?: number;
+    };
+
+    /**
+     * FileDownload upsert
+     */
+    export type FileDownloadUpsertArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Select specific fields to fetch from the FileDownload
+         */
+        select?: FileDownloadSelect<ExtArgs> | null;
+        /**
+         * Omit specific fields from the FileDownload
+         */
+        omit?: FileDownloadOmit<ExtArgs> | null;
+        /**
+         * The filter to search for the FileDownload to update in case it exists.
+         */
+        where: FileDownloadWhereUniqueInput;
+        /**
+         * In case the FileDownload found by the `where` argument doesn't exist, create a new FileDownload with this data.
+         */
+        create: XOR<FileDownloadCreateInput, FileDownloadUncheckedCreateInput>;
+        /**
+         * In case the FileDownload was found with the provided `where` argument, update it with this data.
+         */
+        update: XOR<FileDownloadUpdateInput, FileDownloadUncheckedUpdateInput>;
+    };
+
+    /**
+     * FileDownload delete
+     */
+    export type FileDownloadDeleteArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Select specific fields to fetch from the FileDownload
+         */
+        select?: FileDownloadSelect<ExtArgs> | null;
+        /**
+         * Omit specific fields from the FileDownload
+         */
+        omit?: FileDownloadOmit<ExtArgs> | null;
+        /**
+         * Filter which FileDownload to delete.
+         */
+        where: FileDownloadWhereUniqueInput;
+    };
+
+    /**
+     * FileDownload deleteMany
+     */
+    export type FileDownloadDeleteManyArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Filter which FileDownloads to delete
+         */
+        where?: FileDownloadWhereInput;
+        /**
+         * Limit how many FileDownloads to delete.
+         */
+        limit?: number;
+    };
+
+    /**
+     * FileDownload without action
+     */
+    export type FileDownloadDefaultArgs<
+        ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    > = {
+        /**
+         * Select specific fields to fetch from the FileDownload
+         */
+        select?: FileDownloadSelect<ExtArgs> | null;
+        /**
+         * Omit specific fields from the FileDownload
+         */
+        omit?: FileDownloadOmit<ExtArgs> | null;
+    };
 
     /**
      * Model GrantOpportunity
@@ -7532,7 +8852,7 @@ export namespace Prisma {
         sustainabilityPlan: string | null;
         budgetSummary: string | null;
         conclusion: string | null;
-        status: boolean | null;
+        downloadStatus: boolean | null;
         createdAt: Date | null;
     };
 
@@ -7549,7 +8869,7 @@ export namespace Prisma {
         sustainabilityPlan: string | null;
         budgetSummary: string | null;
         conclusion: string | null;
-        status: boolean | null;
+        downloadStatus: boolean | null;
         createdAt: Date | null;
     };
 
@@ -7566,7 +8886,7 @@ export namespace Prisma {
         sustainabilityPlan: number;
         budgetSummary: number;
         conclusion: number;
-        status: number;
+        downloadStatus: number;
         createdAt: number;
         _all: number;
     };
@@ -7584,7 +8904,7 @@ export namespace Prisma {
         sustainabilityPlan?: true;
         budgetSummary?: true;
         conclusion?: true;
-        status?: true;
+        downloadStatus?: true;
         createdAt?: true;
     };
 
@@ -7601,7 +8921,7 @@ export namespace Prisma {
         sustainabilityPlan?: true;
         budgetSummary?: true;
         conclusion?: true;
-        status?: true;
+        downloadStatus?: true;
         createdAt?: true;
     };
 
@@ -7618,7 +8938,7 @@ export namespace Prisma {
         sustainabilityPlan?: true;
         budgetSummary?: true;
         conclusion?: true;
-        status?: true;
+        downloadStatus?: true;
         createdAt?: true;
         _all?: true;
     };
@@ -7711,7 +9031,7 @@ export namespace Prisma {
         sustainabilityPlan: string | null;
         budgetSummary: string | null;
         conclusion: string | null;
-        status: boolean;
+        downloadStatus: boolean;
         createdAt: Date;
         _count: ProposalDraftCountAggregateOutputType | null;
         _min: ProposalDraftMinAggregateOutputType | null;
@@ -7746,7 +9066,7 @@ export namespace Prisma {
             sustainabilityPlan?: boolean;
             budgetSummary?: boolean;
             conclusion?: boolean;
-            status?: boolean;
+            downloadStatus?: boolean;
             createdAt?: boolean;
             organization?: boolean | OrganizationDefaultArgs<ExtArgs>;
             grant?: boolean | GrantOpportunityDefaultArgs<ExtArgs>;
@@ -7770,7 +9090,7 @@ export namespace Prisma {
             sustainabilityPlan?: boolean;
             budgetSummary?: boolean;
             conclusion?: boolean;
-            status?: boolean;
+            downloadStatus?: boolean;
             createdAt?: boolean;
             organization?: boolean | OrganizationDefaultArgs<ExtArgs>;
             grant?: boolean | GrantOpportunityDefaultArgs<ExtArgs>;
@@ -7794,7 +9114,7 @@ export namespace Prisma {
             sustainabilityPlan?: boolean;
             budgetSummary?: boolean;
             conclusion?: boolean;
-            status?: boolean;
+            downloadStatus?: boolean;
             createdAt?: boolean;
             organization?: boolean | OrganizationDefaultArgs<ExtArgs>;
             grant?: boolean | GrantOpportunityDefaultArgs<ExtArgs>;
@@ -7815,7 +9135,7 @@ export namespace Prisma {
         sustainabilityPlan?: boolean;
         budgetSummary?: boolean;
         conclusion?: boolean;
-        status?: boolean;
+        downloadStatus?: boolean;
         createdAt?: boolean;
     };
 
@@ -7834,7 +9154,7 @@ export namespace Prisma {
         | "sustainabilityPlan"
         | "budgetSummary"
         | "conclusion"
-        | "status"
+        | "downloadStatus"
         | "createdAt",
         ExtArgs["result"]["proposalDraft"]
     >;
@@ -7879,7 +9199,7 @@ export namespace Prisma {
                 sustainabilityPlan: string | null;
                 budgetSummary: string | null;
                 conclusion: string | null;
-                status: boolean;
+                downloadStatus: boolean;
                 createdAt: Date;
             },
             ExtArgs["result"]["proposalDraft"]
@@ -8487,7 +9807,7 @@ export namespace Prisma {
         readonly sustainabilityPlan: FieldRef<"ProposalDraft", "String">;
         readonly budgetSummary: FieldRef<"ProposalDraft", "String">;
         readonly conclusion: FieldRef<"ProposalDraft", "String">;
-        readonly status: FieldRef<"ProposalDraft", "Boolean">;
+        readonly downloadStatus: FieldRef<"ProposalDraft", "Boolean">;
         readonly createdAt: FieldRef<"ProposalDraft", "DateTime">;
     }
 
@@ -10305,6 +11625,21 @@ export namespace Prisma {
     export type TransactionIsolationLevel =
         (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
 
+    export const FileDownloadScalarFieldEnum: {
+        id: "id";
+        fileName: "fileName";
+        filePath: "filePath";
+        fileType: "fileType";
+        email: "email";
+        emailSent: "emailSent";
+        emailSentAt: "emailSentAt";
+        downloadedAt: "downloadedAt";
+        createdAt: "createdAt";
+    };
+
+    export type FileDownloadScalarFieldEnum =
+        (typeof FileDownloadScalarFieldEnum)[keyof typeof FileDownloadScalarFieldEnum];
+
     export const GrantOpportunityScalarFieldEnum: {
         id: "id";
         organizationId: "organizationId";
@@ -10388,7 +11723,7 @@ export namespace Prisma {
         sustainabilityPlan: "sustainabilityPlan";
         budgetSummary: "budgetSummary";
         conclusion: "conclusion";
-        status: "status";
+        downloadStatus: "downloadStatus";
         createdAt: "createdAt";
     };
 
@@ -10444,6 +11779,11 @@ export namespace Prisma {
     export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "String[]">;
 
     /**
+     * Reference to a field of type 'Boolean'
+     */
+    export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "Boolean">;
+
+    /**
      * Reference to a field of type 'DateTime'
      */
     export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "DateTime">;
@@ -10480,11 +11820,6 @@ export namespace Prisma {
     export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "Int[]">;
 
     /**
-     * Reference to a field of type 'Boolean'
-     */
-    export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "Boolean">;
-
-    /**
      * Reference to a field of type 'Float'
      */
     export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "Float">;
@@ -10497,6 +11832,85 @@ export namespace Prisma {
     /**
      * Deep Input Types
      */
+
+    export type FileDownloadWhereInput = {
+        AND?: FileDownloadWhereInput | FileDownloadWhereInput[];
+        OR?: FileDownloadWhereInput[];
+        NOT?: FileDownloadWhereInput | FileDownloadWhereInput[];
+        id?: UuidFilter<"FileDownload"> | string;
+        fileName?: StringFilter<"FileDownload"> | string;
+        filePath?: StringNullableFilter<"FileDownload"> | string | null;
+        fileType?: StringNullableFilter<"FileDownload"> | string | null;
+        email?: StringNullableFilter<"FileDownload"> | string | null;
+        emailSent?: BoolFilter<"FileDownload"> | boolean;
+        emailSentAt?: DateTimeNullableFilter<"FileDownload"> | Date | string | null;
+        downloadedAt?: DateTimeFilter<"FileDownload"> | Date | string;
+        createdAt?: DateTimeFilter<"FileDownload"> | Date | string;
+    };
+
+    export type FileDownloadOrderByWithRelationInput = {
+        id?: SortOrder;
+        fileName?: SortOrder;
+        filePath?: SortOrderInput | SortOrder;
+        fileType?: SortOrderInput | SortOrder;
+        email?: SortOrderInput | SortOrder;
+        emailSent?: SortOrder;
+        emailSentAt?: SortOrderInput | SortOrder;
+        downloadedAt?: SortOrder;
+        createdAt?: SortOrder;
+    };
+
+    export type FileDownloadWhereUniqueInput = Prisma.AtLeast<
+        {
+            id?: string;
+            AND?: FileDownloadWhereInput | FileDownloadWhereInput[];
+            OR?: FileDownloadWhereInput[];
+            NOT?: FileDownloadWhereInput | FileDownloadWhereInput[];
+            fileName?: StringFilter<"FileDownload"> | string;
+            filePath?: StringNullableFilter<"FileDownload"> | string | null;
+            fileType?: StringNullableFilter<"FileDownload"> | string | null;
+            email?: StringNullableFilter<"FileDownload"> | string | null;
+            emailSent?: BoolFilter<"FileDownload"> | boolean;
+            emailSentAt?: DateTimeNullableFilter<"FileDownload"> | Date | string | null;
+            downloadedAt?: DateTimeFilter<"FileDownload"> | Date | string;
+            createdAt?: DateTimeFilter<"FileDownload"> | Date | string;
+        },
+        "id"
+    >;
+
+    export type FileDownloadOrderByWithAggregationInput = {
+        id?: SortOrder;
+        fileName?: SortOrder;
+        filePath?: SortOrderInput | SortOrder;
+        fileType?: SortOrderInput | SortOrder;
+        email?: SortOrderInput | SortOrder;
+        emailSent?: SortOrder;
+        emailSentAt?: SortOrderInput | SortOrder;
+        downloadedAt?: SortOrder;
+        createdAt?: SortOrder;
+        _count?: FileDownloadCountOrderByAggregateInput;
+        _max?: FileDownloadMaxOrderByAggregateInput;
+        _min?: FileDownloadMinOrderByAggregateInput;
+    };
+
+    export type FileDownloadScalarWhereWithAggregatesInput = {
+        AND?:
+            | FileDownloadScalarWhereWithAggregatesInput
+            | FileDownloadScalarWhereWithAggregatesInput[];
+        OR?: FileDownloadScalarWhereWithAggregatesInput[];
+        NOT?:
+            | FileDownloadScalarWhereWithAggregatesInput
+            | FileDownloadScalarWhereWithAggregatesInput[];
+        id?: UuidWithAggregatesFilter<"FileDownload"> | string;
+        fileName?: StringWithAggregatesFilter<"FileDownload"> | string;
+        filePath?: StringNullableWithAggregatesFilter<"FileDownload"> | string | null;
+        fileType?: StringNullableWithAggregatesFilter<"FileDownload"> | string | null;
+        email?: StringNullableWithAggregatesFilter<"FileDownload"> | string | null;
+        emailSent?: BoolWithAggregatesFilter<"FileDownload"> | boolean;
+        emailSentAt?: DateTimeNullableWithAggregatesFilter<"FileDownload"> | Date | string | null;
+        downloadedAt?: DateTimeWithAggregatesFilter<"FileDownload"> | Date | string;
+        createdAt?: DateTimeWithAggregatesFilter<"FileDownload"> | Date | string;
+    };
 
     export type GrantOpportunityWhereInput = {
         AND?: GrantOpportunityWhereInput | GrantOpportunityWhereInput[];
@@ -10979,7 +12393,7 @@ export namespace Prisma {
         sustainabilityPlan?: StringNullableFilter<"ProposalDraft"> | string | null;
         budgetSummary?: StringNullableFilter<"ProposalDraft"> | string | null;
         conclusion?: StringNullableFilter<"ProposalDraft"> | string | null;
-        status?: BoolFilter<"ProposalDraft"> | boolean;
+        downloadStatus?: BoolFilter<"ProposalDraft"> | boolean;
         createdAt?: DateTimeFilter<"ProposalDraft"> | Date | string;
         organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>;
         grant?: XOR<GrantOpportunityScalarRelationFilter, GrantOpportunityWhereInput>;
@@ -10998,7 +12412,7 @@ export namespace Prisma {
         sustainabilityPlan?: SortOrderInput | SortOrder;
         budgetSummary?: SortOrderInput | SortOrder;
         conclusion?: SortOrderInput | SortOrder;
-        status?: SortOrder;
+        downloadStatus?: SortOrder;
         createdAt?: SortOrder;
         organization?: OrganizationOrderByWithRelationInput;
         grant?: GrantOpportunityOrderByWithRelationInput;
@@ -11021,7 +12435,7 @@ export namespace Prisma {
             sustainabilityPlan?: StringNullableFilter<"ProposalDraft"> | string | null;
             budgetSummary?: StringNullableFilter<"ProposalDraft"> | string | null;
             conclusion?: StringNullableFilter<"ProposalDraft"> | string | null;
-            status?: BoolFilter<"ProposalDraft"> | boolean;
+            downloadStatus?: BoolFilter<"ProposalDraft"> | boolean;
             createdAt?: DateTimeFilter<"ProposalDraft"> | Date | string;
             organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>;
             grant?: XOR<GrantOpportunityScalarRelationFilter, GrantOpportunityWhereInput>;
@@ -11042,7 +12456,7 @@ export namespace Prisma {
         sustainabilityPlan?: SortOrderInput | SortOrder;
         budgetSummary?: SortOrderInput | SortOrder;
         conclusion?: SortOrderInput | SortOrder;
-        status?: SortOrder;
+        downloadStatus?: SortOrder;
         createdAt?: SortOrder;
         _count?: ProposalDraftCountOrderByAggregateInput;
         _max?: ProposalDraftMaxOrderByAggregateInput;
@@ -11072,7 +12486,7 @@ export namespace Prisma {
         sustainabilityPlan?: StringNullableWithAggregatesFilter<"ProposalDraft"> | string | null;
         budgetSummary?: StringNullableWithAggregatesFilter<"ProposalDraft"> | string | null;
         conclusion?: StringNullableWithAggregatesFilter<"ProposalDraft"> | string | null;
-        status?: BoolWithAggregatesFilter<"ProposalDraft"> | boolean;
+        downloadStatus?: BoolWithAggregatesFilter<"ProposalDraft"> | boolean;
         createdAt?: DateTimeWithAggregatesFilter<"ProposalDraft"> | Date | string;
     };
 
@@ -11151,6 +12565,90 @@ export namespace Prisma {
         strengths?: StringNullableWithAggregatesFilter<"ReadinessScore"> | string | null;
         improvementAreas?: StringNullableWithAggregatesFilter<"ReadinessScore"> | string | null;
         createdAt?: DateTimeWithAggregatesFilter<"ReadinessScore"> | Date | string;
+    };
+
+    export type FileDownloadCreateInput = {
+        id?: string;
+        fileName: string;
+        filePath?: string | null;
+        fileType?: string | null;
+        email?: string | null;
+        emailSent?: boolean;
+        emailSentAt?: Date | string | null;
+        downloadedAt?: Date | string;
+        createdAt?: Date | string;
+    };
+
+    export type FileDownloadUncheckedCreateInput = {
+        id?: string;
+        fileName: string;
+        filePath?: string | null;
+        fileType?: string | null;
+        email?: string | null;
+        emailSent?: boolean;
+        emailSentAt?: Date | string | null;
+        downloadedAt?: Date | string;
+        createdAt?: Date | string;
+    };
+
+    export type FileDownloadUpdateInput = {
+        id?: StringFieldUpdateOperationsInput | string;
+        fileName?: StringFieldUpdateOperationsInput | string;
+        filePath?: NullableStringFieldUpdateOperationsInput | string | null;
+        fileType?: NullableStringFieldUpdateOperationsInput | string | null;
+        email?: NullableStringFieldUpdateOperationsInput | string | null;
+        emailSent?: BoolFieldUpdateOperationsInput | boolean;
+        emailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+        downloadedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+        createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    };
+
+    export type FileDownloadUncheckedUpdateInput = {
+        id?: StringFieldUpdateOperationsInput | string;
+        fileName?: StringFieldUpdateOperationsInput | string;
+        filePath?: NullableStringFieldUpdateOperationsInput | string | null;
+        fileType?: NullableStringFieldUpdateOperationsInput | string | null;
+        email?: NullableStringFieldUpdateOperationsInput | string | null;
+        emailSent?: BoolFieldUpdateOperationsInput | boolean;
+        emailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+        downloadedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+        createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    };
+
+    export type FileDownloadCreateManyInput = {
+        id?: string;
+        fileName: string;
+        filePath?: string | null;
+        fileType?: string | null;
+        email?: string | null;
+        emailSent?: boolean;
+        emailSentAt?: Date | string | null;
+        downloadedAt?: Date | string;
+        createdAt?: Date | string;
+    };
+
+    export type FileDownloadUpdateManyMutationInput = {
+        id?: StringFieldUpdateOperationsInput | string;
+        fileName?: StringFieldUpdateOperationsInput | string;
+        filePath?: NullableStringFieldUpdateOperationsInput | string | null;
+        fileType?: NullableStringFieldUpdateOperationsInput | string | null;
+        email?: NullableStringFieldUpdateOperationsInput | string | null;
+        emailSent?: BoolFieldUpdateOperationsInput | boolean;
+        emailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+        downloadedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+        createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    };
+
+    export type FileDownloadUncheckedUpdateManyInput = {
+        id?: StringFieldUpdateOperationsInput | string;
+        fileName?: StringFieldUpdateOperationsInput | string;
+        filePath?: NullableStringFieldUpdateOperationsInput | string | null;
+        fileType?: NullableStringFieldUpdateOperationsInput | string | null;
+        email?: NullableStringFieldUpdateOperationsInput | string | null;
+        emailSent?: BoolFieldUpdateOperationsInput | boolean;
+        emailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+        downloadedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+        createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     };
 
     export type GrantOpportunityCreateInput = {
@@ -11649,7 +13147,7 @@ export namespace Prisma {
         sustainabilityPlan?: string | null;
         budgetSummary?: string | null;
         conclusion?: string | null;
-        status?: boolean;
+        downloadStatus?: boolean;
         createdAt?: Date | string;
         organization: OrganizationCreateNestedOneWithoutProposalDraftsInput;
         grant: GrantOpportunityCreateNestedOneWithoutProposalDraftsInput;
@@ -11668,7 +13166,7 @@ export namespace Prisma {
         sustainabilityPlan?: string | null;
         budgetSummary?: string | null;
         conclusion?: string | null;
-        status?: boolean;
+        downloadStatus?: boolean;
         createdAt?: Date | string;
     };
 
@@ -11683,7 +13181,7 @@ export namespace Prisma {
         sustainabilityPlan?: NullableStringFieldUpdateOperationsInput | string | null;
         budgetSummary?: NullableStringFieldUpdateOperationsInput | string | null;
         conclusion?: NullableStringFieldUpdateOperationsInput | string | null;
-        status?: BoolFieldUpdateOperationsInput | boolean;
+        downloadStatus?: BoolFieldUpdateOperationsInput | boolean;
         createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
         organization?: OrganizationUpdateOneRequiredWithoutProposalDraftsNestedInput;
         grant?: GrantOpportunityUpdateOneRequiredWithoutProposalDraftsNestedInput;
@@ -11702,7 +13200,7 @@ export namespace Prisma {
         sustainabilityPlan?: NullableStringFieldUpdateOperationsInput | string | null;
         budgetSummary?: NullableStringFieldUpdateOperationsInput | string | null;
         conclusion?: NullableStringFieldUpdateOperationsInput | string | null;
-        status?: BoolFieldUpdateOperationsInput | boolean;
+        downloadStatus?: BoolFieldUpdateOperationsInput | boolean;
         createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     };
 
@@ -11719,7 +13217,7 @@ export namespace Prisma {
         sustainabilityPlan?: string | null;
         budgetSummary?: string | null;
         conclusion?: string | null;
-        status?: boolean;
+        downloadStatus?: boolean;
         createdAt?: Date | string;
     };
 
@@ -11734,7 +13232,7 @@ export namespace Prisma {
         sustainabilityPlan?: NullableStringFieldUpdateOperationsInput | string | null;
         budgetSummary?: NullableStringFieldUpdateOperationsInput | string | null;
         conclusion?: NullableStringFieldUpdateOperationsInput | string | null;
-        status?: BoolFieldUpdateOperationsInput | boolean;
+        downloadStatus?: BoolFieldUpdateOperationsInput | boolean;
         createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     };
 
@@ -11751,7 +13249,7 @@ export namespace Prisma {
         sustainabilityPlan?: NullableStringFieldUpdateOperationsInput | string | null;
         budgetSummary?: NullableStringFieldUpdateOperationsInput | string | null;
         conclusion?: NullableStringFieldUpdateOperationsInput | string | null;
-        status?: BoolFieldUpdateOperationsInput | boolean;
+        downloadStatus?: BoolFieldUpdateOperationsInput | boolean;
         createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     };
 
@@ -11865,6 +13363,11 @@ export namespace Prisma {
         not?: NestedStringNullableFilter<$PrismaModel> | string | null;
     };
 
+    export type BoolFilter<$PrismaModel = never> = {
+        equals?: boolean | BooleanFieldRefInput<$PrismaModel>;
+        not?: NestedBoolFilter<$PrismaModel> | boolean;
+    };
+
     export type DateTimeNullableFilter<$PrismaModel = never> = {
         equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null;
         in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null;
@@ -11874,6 +13377,145 @@ export namespace Prisma {
         gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
         gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
         not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null;
+    };
+
+    export type DateTimeFilter<$PrismaModel = never> = {
+        equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>;
+        notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>;
+        lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        not?: NestedDateTimeFilter<$PrismaModel> | Date | string;
+    };
+
+    export type SortOrderInput = {
+        sort: SortOrder;
+        nulls?: NullsOrder;
+    };
+
+    export type FileDownloadCountOrderByAggregateInput = {
+        id?: SortOrder;
+        fileName?: SortOrder;
+        filePath?: SortOrder;
+        fileType?: SortOrder;
+        email?: SortOrder;
+        emailSent?: SortOrder;
+        emailSentAt?: SortOrder;
+        downloadedAt?: SortOrder;
+        createdAt?: SortOrder;
+    };
+
+    export type FileDownloadMaxOrderByAggregateInput = {
+        id?: SortOrder;
+        fileName?: SortOrder;
+        filePath?: SortOrder;
+        fileType?: SortOrder;
+        email?: SortOrder;
+        emailSent?: SortOrder;
+        emailSentAt?: SortOrder;
+        downloadedAt?: SortOrder;
+        createdAt?: SortOrder;
+    };
+
+    export type FileDownloadMinOrderByAggregateInput = {
+        id?: SortOrder;
+        fileName?: SortOrder;
+        filePath?: SortOrder;
+        fileType?: SortOrder;
+        email?: SortOrder;
+        emailSent?: SortOrder;
+        emailSentAt?: SortOrder;
+        downloadedAt?: SortOrder;
+        createdAt?: SortOrder;
+    };
+
+    export type UuidWithAggregatesFilter<$PrismaModel = never> = {
+        equals?: string | StringFieldRefInput<$PrismaModel>;
+        in?: string[] | ListStringFieldRefInput<$PrismaModel>;
+        notIn?: string[] | ListStringFieldRefInput<$PrismaModel>;
+        lt?: string | StringFieldRefInput<$PrismaModel>;
+        lte?: string | StringFieldRefInput<$PrismaModel>;
+        gt?: string | StringFieldRefInput<$PrismaModel>;
+        gte?: string | StringFieldRefInput<$PrismaModel>;
+        mode?: QueryMode;
+        not?: NestedUuidWithAggregatesFilter<$PrismaModel> | string;
+        _count?: NestedIntFilter<$PrismaModel>;
+        _min?: NestedStringFilter<$PrismaModel>;
+        _max?: NestedStringFilter<$PrismaModel>;
+    };
+
+    export type StringWithAggregatesFilter<$PrismaModel = never> = {
+        equals?: string | StringFieldRefInput<$PrismaModel>;
+        in?: string[] | ListStringFieldRefInput<$PrismaModel>;
+        notIn?: string[] | ListStringFieldRefInput<$PrismaModel>;
+        lt?: string | StringFieldRefInput<$PrismaModel>;
+        lte?: string | StringFieldRefInput<$PrismaModel>;
+        gt?: string | StringFieldRefInput<$PrismaModel>;
+        gte?: string | StringFieldRefInput<$PrismaModel>;
+        contains?: string | StringFieldRefInput<$PrismaModel>;
+        startsWith?: string | StringFieldRefInput<$PrismaModel>;
+        endsWith?: string | StringFieldRefInput<$PrismaModel>;
+        mode?: QueryMode;
+        not?: NestedStringWithAggregatesFilter<$PrismaModel> | string;
+        _count?: NestedIntFilter<$PrismaModel>;
+        _min?: NestedStringFilter<$PrismaModel>;
+        _max?: NestedStringFilter<$PrismaModel>;
+    };
+
+    export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+        equals?: string | StringFieldRefInput<$PrismaModel> | null;
+        in?: string[] | ListStringFieldRefInput<$PrismaModel> | null;
+        notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null;
+        lt?: string | StringFieldRefInput<$PrismaModel>;
+        lte?: string | StringFieldRefInput<$PrismaModel>;
+        gt?: string | StringFieldRefInput<$PrismaModel>;
+        gte?: string | StringFieldRefInput<$PrismaModel>;
+        contains?: string | StringFieldRefInput<$PrismaModel>;
+        startsWith?: string | StringFieldRefInput<$PrismaModel>;
+        endsWith?: string | StringFieldRefInput<$PrismaModel>;
+        mode?: QueryMode;
+        not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null;
+        _count?: NestedIntNullableFilter<$PrismaModel>;
+        _min?: NestedStringNullableFilter<$PrismaModel>;
+        _max?: NestedStringNullableFilter<$PrismaModel>;
+    };
+
+    export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+        equals?: boolean | BooleanFieldRefInput<$PrismaModel>;
+        not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean;
+        _count?: NestedIntFilter<$PrismaModel>;
+        _min?: NestedBoolFilter<$PrismaModel>;
+        _max?: NestedBoolFilter<$PrismaModel>;
+    };
+
+    export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+        equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null;
+        in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null;
+        notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null;
+        lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null;
+        _count?: NestedIntNullableFilter<$PrismaModel>;
+        _min?: NestedDateTimeNullableFilter<$PrismaModel>;
+        _max?: NestedDateTimeNullableFilter<$PrismaModel>;
+    };
+
+    export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+        equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>;
+        notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>;
+        lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string;
+        _count?: NestedIntFilter<$PrismaModel>;
+        _min?: NestedDateTimeFilter<$PrismaModel>;
+        _max?: NestedDateTimeFilter<$PrismaModel>;
     };
 
     export type DecimalNullableFilter<$PrismaModel = never> = {
@@ -11923,17 +13565,6 @@ export namespace Prisma {
         not?: NestedUuidNullableFilter<$PrismaModel> | string | null;
     };
 
-    export type DateTimeFilter<$PrismaModel = never> = {
-        equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>;
-        notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>;
-        lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        not?: NestedDateTimeFilter<$PrismaModel> | Date | string;
-    };
-
     export type OrganizationScalarRelationFilter = {
         is?: OrganizationWhereInput;
         isNot?: OrganizationWhereInput;
@@ -11960,11 +13591,6 @@ export namespace Prisma {
         every?: ProposalDraftWhereInput;
         some?: ProposalDraftWhereInput;
         none?: ProposalDraftWhereInput;
-    };
-
-    export type SortOrderInput = {
-        sort: SortOrder;
-        nulls?: NullsOrder;
     };
 
     export type ReadinessScoreOrderByRelationAggregateInput = {
@@ -12041,71 +13667,6 @@ export namespace Prisma {
         amountUsd?: SortOrder;
     };
 
-    export type UuidWithAggregatesFilter<$PrismaModel = never> = {
-        equals?: string | StringFieldRefInput<$PrismaModel>;
-        in?: string[] | ListStringFieldRefInput<$PrismaModel>;
-        notIn?: string[] | ListStringFieldRefInput<$PrismaModel>;
-        lt?: string | StringFieldRefInput<$PrismaModel>;
-        lte?: string | StringFieldRefInput<$PrismaModel>;
-        gt?: string | StringFieldRefInput<$PrismaModel>;
-        gte?: string | StringFieldRefInput<$PrismaModel>;
-        mode?: QueryMode;
-        not?: NestedUuidWithAggregatesFilter<$PrismaModel> | string;
-        _count?: NestedIntFilter<$PrismaModel>;
-        _min?: NestedStringFilter<$PrismaModel>;
-        _max?: NestedStringFilter<$PrismaModel>;
-    };
-
-    export type StringWithAggregatesFilter<$PrismaModel = never> = {
-        equals?: string | StringFieldRefInput<$PrismaModel>;
-        in?: string[] | ListStringFieldRefInput<$PrismaModel>;
-        notIn?: string[] | ListStringFieldRefInput<$PrismaModel>;
-        lt?: string | StringFieldRefInput<$PrismaModel>;
-        lte?: string | StringFieldRefInput<$PrismaModel>;
-        gt?: string | StringFieldRefInput<$PrismaModel>;
-        gte?: string | StringFieldRefInput<$PrismaModel>;
-        contains?: string | StringFieldRefInput<$PrismaModel>;
-        startsWith?: string | StringFieldRefInput<$PrismaModel>;
-        endsWith?: string | StringFieldRefInput<$PrismaModel>;
-        mode?: QueryMode;
-        not?: NestedStringWithAggregatesFilter<$PrismaModel> | string;
-        _count?: NestedIntFilter<$PrismaModel>;
-        _min?: NestedStringFilter<$PrismaModel>;
-        _max?: NestedStringFilter<$PrismaModel>;
-    };
-
-    export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-        equals?: string | StringFieldRefInput<$PrismaModel> | null;
-        in?: string[] | ListStringFieldRefInput<$PrismaModel> | null;
-        notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null;
-        lt?: string | StringFieldRefInput<$PrismaModel>;
-        lte?: string | StringFieldRefInput<$PrismaModel>;
-        gt?: string | StringFieldRefInput<$PrismaModel>;
-        gte?: string | StringFieldRefInput<$PrismaModel>;
-        contains?: string | StringFieldRefInput<$PrismaModel>;
-        startsWith?: string | StringFieldRefInput<$PrismaModel>;
-        endsWith?: string | StringFieldRefInput<$PrismaModel>;
-        mode?: QueryMode;
-        not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null;
-        _count?: NestedIntNullableFilter<$PrismaModel>;
-        _min?: NestedStringNullableFilter<$PrismaModel>;
-        _max?: NestedStringNullableFilter<$PrismaModel>;
-    };
-
-    export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-        equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null;
-        in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null;
-        notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null;
-        lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null;
-        _count?: NestedIntNullableFilter<$PrismaModel>;
-        _min?: NestedDateTimeNullableFilter<$PrismaModel>;
-        _max?: NestedDateTimeNullableFilter<$PrismaModel>;
-    };
-
     export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
         equals?:
             | Decimal
@@ -12159,20 +13720,6 @@ export namespace Prisma {
         _count?: NestedIntNullableFilter<$PrismaModel>;
         _min?: NestedStringNullableFilter<$PrismaModel>;
         _max?: NestedStringNullableFilter<$PrismaModel>;
-    };
-
-    export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-        equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>;
-        notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>;
-        lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string;
-        _count?: NestedIntFilter<$PrismaModel>;
-        _min?: NestedDateTimeFilter<$PrismaModel>;
-        _max?: NestedDateTimeFilter<$PrismaModel>;
     };
 
     export type GrantOpportunityListRelationFilter = {
@@ -12272,11 +13819,6 @@ export namespace Prisma {
         not?: NestedIntNullableFilter<$PrismaModel> | number | null;
     };
 
-    export type BoolFilter<$PrismaModel = never> = {
-        equals?: boolean | BooleanFieldRefInput<$PrismaModel>;
-        not?: NestedBoolFilter<$PrismaModel> | boolean;
-    };
-
     export type InternalGrantSourceListRelationFilter = {
         every?: InternalGrantSourceWhereInput;
         some?: InternalGrantSourceWhereInput;
@@ -12368,14 +13910,6 @@ export namespace Prisma {
         _max?: NestedIntNullableFilter<$PrismaModel>;
     };
 
-    export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-        equals?: boolean | BooleanFieldRefInput<$PrismaModel>;
-        not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean;
-        _count?: NestedIntFilter<$PrismaModel>;
-        _min?: NestedBoolFilter<$PrismaModel>;
-        _max?: NestedBoolFilter<$PrismaModel>;
-    };
-
     export type ProposalDraftCountOrderByAggregateInput = {
         id?: SortOrder;
         organizationId?: SortOrder;
@@ -12389,7 +13923,7 @@ export namespace Prisma {
         sustainabilityPlan?: SortOrder;
         budgetSummary?: SortOrder;
         conclusion?: SortOrder;
-        status?: SortOrder;
+        downloadStatus?: SortOrder;
         createdAt?: SortOrder;
     };
 
@@ -12406,7 +13940,7 @@ export namespace Prisma {
         sustainabilityPlan?: SortOrder;
         budgetSummary?: SortOrder;
         conclusion?: SortOrder;
-        status?: SortOrder;
+        downloadStatus?: SortOrder;
         createdAt?: SortOrder;
     };
 
@@ -12423,7 +13957,7 @@ export namespace Prisma {
         sustainabilityPlan?: SortOrder;
         budgetSummary?: SortOrder;
         conclusion?: SortOrder;
-        status?: SortOrder;
+        downloadStatus?: SortOrder;
         createdAt?: SortOrder;
     };
 
@@ -12490,6 +14024,26 @@ export namespace Prisma {
         _sum?: NestedIntFilter<$PrismaModel>;
         _min?: NestedIntFilter<$PrismaModel>;
         _max?: NestedIntFilter<$PrismaModel>;
+    };
+
+    export type StringFieldUpdateOperationsInput = {
+        set?: string;
+    };
+
+    export type NullableStringFieldUpdateOperationsInput = {
+        set?: string | null;
+    };
+
+    export type BoolFieldUpdateOperationsInput = {
+        set?: boolean;
+    };
+
+    export type NullableDateTimeFieldUpdateOperationsInput = {
+        set?: Date | string | null;
+    };
+
+    export type DateTimeFieldUpdateOperationsInput = {
+        set?: Date | string;
     };
 
     export type OrganizationCreateNestedOneWithoutGrantOpportunitiesInput = {
@@ -12600,28 +14154,12 @@ export namespace Prisma {
         connect?: ProposalDraftWhereUniqueInput | ProposalDraftWhereUniqueInput[];
     };
 
-    export type StringFieldUpdateOperationsInput = {
-        set?: string;
-    };
-
-    export type NullableStringFieldUpdateOperationsInput = {
-        set?: string | null;
-    };
-
-    export type NullableDateTimeFieldUpdateOperationsInput = {
-        set?: Date | string | null;
-    };
-
     export type NullableDecimalFieldUpdateOperationsInput = {
         set?: Decimal | DecimalJsLike | number | string | null;
         increment?: Decimal | DecimalJsLike | number | string;
         decrement?: Decimal | DecimalJsLike | number | string;
         multiply?: Decimal | DecimalJsLike | number | string;
         divide?: Decimal | DecimalJsLike | number | string;
-    };
-
-    export type DateTimeFieldUpdateOperationsInput = {
-        set?: Date | string;
     };
 
     export type OrganizationUpdateOneRequiredWithoutGrantOpportunitiesNestedInput = {
@@ -13150,10 +14688,6 @@ export namespace Prisma {
         divide?: number;
     };
 
-    export type BoolFieldUpdateOperationsInput = {
-        set?: boolean;
-    };
-
     export type GrantOpportunityUpdateManyWithoutOrganizationNestedInput = {
         create?:
             | XOR<
@@ -13585,6 +15119,11 @@ export namespace Prisma {
         not?: NestedStringNullableFilter<$PrismaModel> | string | null;
     };
 
+    export type NestedBoolFilter<$PrismaModel = never> = {
+        equals?: boolean | BooleanFieldRefInput<$PrismaModel>;
+        not?: NestedBoolFilter<$PrismaModel> | boolean;
+    };
+
     export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
         equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null;
         in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null;
@@ -13594,52 +15133,6 @@ export namespace Prisma {
         gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
         gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
         not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null;
-    };
-
-    export type NestedDecimalNullableFilter<$PrismaModel = never> = {
-        equals?:
-            | Decimal
-            | DecimalJsLike
-            | number
-            | string
-            | DecimalFieldRefInput<$PrismaModel>
-            | null;
-        in?:
-            | Decimal[]
-            | DecimalJsLike[]
-            | number[]
-            | string[]
-            | ListDecimalFieldRefInput<$PrismaModel>
-            | null;
-        notIn?:
-            | Decimal[]
-            | DecimalJsLike[]
-            | number[]
-            | string[]
-            | ListDecimalFieldRefInput<$PrismaModel>
-            | null;
-        lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>;
-        lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>;
-        gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>;
-        gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>;
-        not?:
-            | NestedDecimalNullableFilter<$PrismaModel>
-            | Decimal
-            | DecimalJsLike
-            | number
-            | string
-            | null;
-    };
-
-    export type NestedUuidNullableFilter<$PrismaModel = never> = {
-        equals?: string | StringFieldRefInput<$PrismaModel> | null;
-        in?: string[] | ListStringFieldRefInput<$PrismaModel> | null;
-        notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null;
-        lt?: string | StringFieldRefInput<$PrismaModel>;
-        lte?: string | StringFieldRefInput<$PrismaModel>;
-        gt?: string | StringFieldRefInput<$PrismaModel>;
-        gte?: string | StringFieldRefInput<$PrismaModel>;
-        not?: NestedUuidNullableFilter<$PrismaModel> | string | null;
     };
 
     export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -13723,6 +15216,14 @@ export namespace Prisma {
         not?: NestedIntNullableFilter<$PrismaModel> | number | null;
     };
 
+    export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+        equals?: boolean | BooleanFieldRefInput<$PrismaModel>;
+        not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean;
+        _count?: NestedIntFilter<$PrismaModel>;
+        _min?: NestedBoolFilter<$PrismaModel>;
+        _max?: NestedBoolFilter<$PrismaModel>;
+    };
+
     export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
         equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null;
         in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null;
@@ -13735,6 +15236,66 @@ export namespace Prisma {
         _count?: NestedIntNullableFilter<$PrismaModel>;
         _min?: NestedDateTimeNullableFilter<$PrismaModel>;
         _max?: NestedDateTimeNullableFilter<$PrismaModel>;
+    };
+
+    export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+        equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>;
+        notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>;
+        lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
+        not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string;
+        _count?: NestedIntFilter<$PrismaModel>;
+        _min?: NestedDateTimeFilter<$PrismaModel>;
+        _max?: NestedDateTimeFilter<$PrismaModel>;
+    };
+
+    export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+        equals?:
+            | Decimal
+            | DecimalJsLike
+            | number
+            | string
+            | DecimalFieldRefInput<$PrismaModel>
+            | null;
+        in?:
+            | Decimal[]
+            | DecimalJsLike[]
+            | number[]
+            | string[]
+            | ListDecimalFieldRefInput<$PrismaModel>
+            | null;
+        notIn?:
+            | Decimal[]
+            | DecimalJsLike[]
+            | number[]
+            | string[]
+            | ListDecimalFieldRefInput<$PrismaModel>
+            | null;
+        lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>;
+        lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>;
+        gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>;
+        gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>;
+        not?:
+            | NestedDecimalNullableFilter<$PrismaModel>
+            | Decimal
+            | DecimalJsLike
+            | number
+            | string
+            | null;
+    };
+
+    export type NestedUuidNullableFilter<$PrismaModel = never> = {
+        equals?: string | StringFieldRefInput<$PrismaModel> | null;
+        in?: string[] | ListStringFieldRefInput<$PrismaModel> | null;
+        notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null;
+        lt?: string | StringFieldRefInput<$PrismaModel>;
+        lte?: string | StringFieldRefInput<$PrismaModel>;
+        gt?: string | StringFieldRefInput<$PrismaModel>;
+        gte?: string | StringFieldRefInput<$PrismaModel>;
+        not?: NestedUuidNullableFilter<$PrismaModel> | string | null;
     };
 
     export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13791,25 +15352,6 @@ export namespace Prisma {
         _max?: NestedStringNullableFilter<$PrismaModel>;
     };
 
-    export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-        equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>;
-        notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>;
-        lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>;
-        not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string;
-        _count?: NestedIntFilter<$PrismaModel>;
-        _min?: NestedDateTimeFilter<$PrismaModel>;
-        _max?: NestedDateTimeFilter<$PrismaModel>;
-    };
-
-    export type NestedBoolFilter<$PrismaModel = never> = {
-        equals?: boolean | BooleanFieldRefInput<$PrismaModel>;
-        not?: NestedBoolFilter<$PrismaModel> | boolean;
-    };
-
     export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
         equals?: number | IntFieldRefInput<$PrismaModel> | null;
         in?: number[] | ListIntFieldRefInput<$PrismaModel> | null;
@@ -13835,14 +15377,6 @@ export namespace Prisma {
         gt?: number | FloatFieldRefInput<$PrismaModel>;
         gte?: number | FloatFieldRefInput<$PrismaModel>;
         not?: NestedFloatNullableFilter<$PrismaModel> | number | null;
-    };
-
-    export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-        equals?: boolean | BooleanFieldRefInput<$PrismaModel>;
-        not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean;
-        _count?: NestedIntFilter<$PrismaModel>;
-        _min?: NestedBoolFilter<$PrismaModel>;
-        _max?: NestedBoolFilter<$PrismaModel>;
     };
 
     export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -14029,7 +15563,7 @@ export namespace Prisma {
         sustainabilityPlan?: string | null;
         budgetSummary?: string | null;
         conclusion?: string | null;
-        status?: boolean;
+        downloadStatus?: boolean;
         createdAt?: Date | string;
         organization: OrganizationCreateNestedOneWithoutProposalDraftsInput;
     };
@@ -14046,7 +15580,7 @@ export namespace Prisma {
         sustainabilityPlan?: string | null;
         budgetSummary?: string | null;
         conclusion?: string | null;
-        status?: boolean;
+        downloadStatus?: boolean;
         createdAt?: Date | string;
     };
 
@@ -14301,7 +15835,7 @@ export namespace Prisma {
         sustainabilityPlan?: StringNullableFilter<"ProposalDraft"> | string | null;
         budgetSummary?: StringNullableFilter<"ProposalDraft"> | string | null;
         conclusion?: StringNullableFilter<"ProposalDraft"> | string | null;
-        status?: BoolFilter<"ProposalDraft"> | boolean;
+        downloadStatus?: BoolFilter<"ProposalDraft"> | boolean;
         createdAt?: DateTimeFilter<"ProposalDraft"> | Date | string;
     };
 
@@ -14944,7 +16478,7 @@ export namespace Prisma {
         sustainabilityPlan?: string | null;
         budgetSummary?: string | null;
         conclusion?: string | null;
-        status?: boolean;
+        downloadStatus?: boolean;
         createdAt?: Date | string;
         grant: GrantOpportunityCreateNestedOneWithoutProposalDraftsInput;
     };
@@ -14961,7 +16495,7 @@ export namespace Prisma {
         sustainabilityPlan?: string | null;
         budgetSummary?: string | null;
         conclusion?: string | null;
-        status?: boolean;
+        downloadStatus?: boolean;
         createdAt?: Date | string;
     };
 
@@ -15642,7 +17176,7 @@ export namespace Prisma {
         sustainabilityPlan?: string | null;
         budgetSummary?: string | null;
         conclusion?: string | null;
-        status?: boolean;
+        downloadStatus?: boolean;
         createdAt?: Date | string;
     };
 
@@ -15735,7 +17269,7 @@ export namespace Prisma {
         sustainabilityPlan?: NullableStringFieldUpdateOperationsInput | string | null;
         budgetSummary?: NullableStringFieldUpdateOperationsInput | string | null;
         conclusion?: NullableStringFieldUpdateOperationsInput | string | null;
-        status?: BoolFieldUpdateOperationsInput | boolean;
+        downloadStatus?: BoolFieldUpdateOperationsInput | boolean;
         createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
         organization?: OrganizationUpdateOneRequiredWithoutProposalDraftsNestedInput;
     };
@@ -15752,7 +17286,7 @@ export namespace Prisma {
         sustainabilityPlan?: NullableStringFieldUpdateOperationsInput | string | null;
         budgetSummary?: NullableStringFieldUpdateOperationsInput | string | null;
         conclusion?: NullableStringFieldUpdateOperationsInput | string | null;
-        status?: BoolFieldUpdateOperationsInput | boolean;
+        downloadStatus?: BoolFieldUpdateOperationsInput | boolean;
         createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     };
 
@@ -15768,7 +17302,7 @@ export namespace Prisma {
         sustainabilityPlan?: NullableStringFieldUpdateOperationsInput | string | null;
         budgetSummary?: NullableStringFieldUpdateOperationsInput | string | null;
         conclusion?: NullableStringFieldUpdateOperationsInput | string | null;
-        status?: BoolFieldUpdateOperationsInput | boolean;
+        downloadStatus?: BoolFieldUpdateOperationsInput | boolean;
         createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     };
 
@@ -15921,7 +17455,7 @@ export namespace Prisma {
         sustainabilityPlan?: string | null;
         budgetSummary?: string | null;
         conclusion?: string | null;
-        status?: boolean;
+        downloadStatus?: boolean;
         createdAt?: Date | string;
     };
 
@@ -16115,7 +17649,7 @@ export namespace Prisma {
         sustainabilityPlan?: NullableStringFieldUpdateOperationsInput | string | null;
         budgetSummary?: NullableStringFieldUpdateOperationsInput | string | null;
         conclusion?: NullableStringFieldUpdateOperationsInput | string | null;
-        status?: BoolFieldUpdateOperationsInput | boolean;
+        downloadStatus?: BoolFieldUpdateOperationsInput | boolean;
         createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
         grant?: GrantOpportunityUpdateOneRequiredWithoutProposalDraftsNestedInput;
     };
@@ -16132,7 +17666,7 @@ export namespace Prisma {
         sustainabilityPlan?: NullableStringFieldUpdateOperationsInput | string | null;
         budgetSummary?: NullableStringFieldUpdateOperationsInput | string | null;
         conclusion?: NullableStringFieldUpdateOperationsInput | string | null;
-        status?: BoolFieldUpdateOperationsInput | boolean;
+        downloadStatus?: BoolFieldUpdateOperationsInput | boolean;
         createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     };
 
@@ -16148,7 +17682,7 @@ export namespace Prisma {
         sustainabilityPlan?: NullableStringFieldUpdateOperationsInput | string | null;
         budgetSummary?: NullableStringFieldUpdateOperationsInput | string | null;
         conclusion?: NullableStringFieldUpdateOperationsInput | string | null;
-        status?: BoolFieldUpdateOperationsInput | boolean;
+        downloadStatus?: BoolFieldUpdateOperationsInput | boolean;
         createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     };
 

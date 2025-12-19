@@ -117,6 +117,18 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
     Serializable: "Serializable",
 });
 
+exports.Prisma.FileDownloadScalarFieldEnum = {
+    id: "id",
+    fileName: "fileName",
+    filePath: "filePath",
+    fileType: "fileType",
+    email: "email",
+    emailSent: "emailSent",
+    emailSentAt: "emailSentAt",
+    downloadedAt: "downloadedAt",
+    createdAt: "createdAt",
+};
+
 exports.Prisma.GrantOpportunityScalarFieldEnum = {
     id: "id",
     organizationId: "organizationId",
@@ -188,7 +200,7 @@ exports.Prisma.ProposalDraftScalarFieldEnum = {
     sustainabilityPlan: "sustainabilityPlan",
     budgetSummary: "budgetSummary",
     conclusion: "conclusion",
-    status: "status",
+    downloadStatus: "downloadStatus",
     createdAt: "createdAt",
 };
 
@@ -218,6 +230,7 @@ exports.Prisma.NullsOrder = {
 };
 
 exports.Prisma.ModelName = {
+    FileDownload: "FileDownload",
     GrantOpportunity: "GrantOpportunity",
     InternalGrantSource: "InternalGrantSource",
     LetterOfIntent: "LetterOfIntent",

@@ -49,7 +49,7 @@ export class ProposalDraftService {
                     sustainabilityPlan: createProposalDraftDto.sustainabilityPlan,
                     budgetSummary: createProposalDraftDto.budgetSummary,
                     conclusion: createProposalDraftDto.conclusion,
-                    status: createProposalDraftDto.status ?? false,
+                    downloadStatus: createProposalDraftDto.downloadStatus ?? false,
                 },
             });
 
@@ -133,7 +133,7 @@ export class ProposalDraftService {
                     sustainabilityPlan: updateProposalDraftDto.sustainabilityPlan,
                     budgetSummary: updateProposalDraftDto.budgetSummary,
                     conclusion: updateProposalDraftDto.conclusion,
-                    status: updateProposalDraftDto.status,
+                    downloadStatus: updateProposalDraftDto.downloadStatus,
                 },
             });
 
@@ -181,7 +181,7 @@ export class ProposalDraftService {
             sustainabilityPlan: proposalDraft.sustainabilityPlan,
             budgetSummary: proposalDraft.budgetSummary,
             conclusion: proposalDraft.conclusion,
-            status: proposalDraft.status,
+            downloadStatus: proposalDraft.downloadStatus,
             createdAt: proposalDraft.createdAt,
         };
     }
