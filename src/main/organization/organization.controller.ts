@@ -26,6 +26,18 @@ export class OrganizationController {
         return await this.organizationService.create(createOrganizationDto);
     }
 
+    // ✅ GET ALL
+    @Get()
+    @ApiOperation({ summary: "Get all Organizations" })
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: "List of all organizations",
+        type: [OrganizationResponseDto],
+    })
+    async findAll() {
+        return await this.organizationService.findAll();
+    }
+
     // ✅ GET BY ID
     @Get(":id")
     @ApiOperation({ summary: "Get organization by ID" })
@@ -64,9 +76,19 @@ export class OrganizationController {
         return await this.organizationService.update(id, updateOrganizationDto);
     }
 
-    // ❌ DELETE (no Swagger response as requested)
+    // ✅ DELETE
     @Delete(":id")
-    remove(@Param("id") id: string) {
-        return this.organizationService.remove(id);
+    @ApiOperation({ summary: "Delete organization by ID" })
+    @ApiParam({ name: "id", example: "a1b2c3-d4e5" })
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: "Organization deleted successfully",
+    })
+    @ApiResponse({
+        status: HttpStatus.NOT_FOUND,
+        description: "Organization not found",
+    })
+    async remove(@Param("id") id: string) {
+        return await this.organizationService.remove(id);
     }
 }

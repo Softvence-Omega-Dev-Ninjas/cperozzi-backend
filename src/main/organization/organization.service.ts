@@ -9,14 +9,24 @@ export class OrganizationService {
     constructor(private readonly prisma: PrismaService) {}
 
     async create(createOrganizationDto: CreateOrganizationDto) {
-        const organization = await this.prisma.organization.create({
-            data: createOrganizationDto,
-        });
+        try {
+            const organization = await this.prisma.organization.create({
+                data: createOrganizationDto,
+            });
 
-        if (!organization) {
-            throw new BadRequestException("Could not create organization");
+            return this.mapToRespnseDto(organization);
+        } catch (error: any) {
+            throw new BadRequestException(
+                `Failed to create organization: ${error?.message || "Unknown error"}`,
+            );
         }
-        return organization;
+    }
+
+    async findAll() {
+        const organizations = await this.prisma.organization.findMany({
+            orderBy: { createdAt: "desc" },
+        });
+        return organizations.map((org) => this.mapToRespnseDto(org));
     }
 
     async findOne(id: string) {
@@ -28,7 +38,7 @@ export class OrganizationService {
             throw new NotFoundException("Organization not found");
         }
 
-        return organization;
+        return this.mapToRespnseDto(organization);
     }
 
     async update(id: string, updateOrganizationDto: UpdateOrganizationDto) {
@@ -40,16 +50,28 @@ export class OrganizationService {
             throw new NotFoundException("Organization not found");
         }
 
-        const updateOrganizaiton = this.prisma.organization.update({
+        const updatedOrganization = await this.prisma.organization.update({
             where: { id },
             data: updateOrganizationDto,
         });
 
-        return this.mapToRespnseDto(updateOrganizaiton);
+        return this.mapToRespnseDto(updatedOrganization);
     }
 
-    remove(id: string) {
-        return `This action removes a #${id} organization`;
+    async remove(id: string) {
+        const organization = await this.prisma.organization.findUnique({
+            where: { id },
+        });
+
+        if (!organization) {
+            throw new NotFoundException("Organization not found");
+        }
+
+        await this.prisma.organization.delete({
+            where: { id },
+        });
+
+        return { message: "Organization deleted successfully" };
     }
 
     private mapToRespnseDto(organization: any): OrganizationResponseDto {
