@@ -1,10 +1,21 @@
 import { Module } from "@nestjs/common";
-import { OrganizationModule } from "./organization/organization.module";
-import { ReadinessModule } from "./readiness/readiness.module";
-import { ProposalDraftModule } from "./proposal-draft/proposal-draft.module";
+import { ExportModule } from "./export/export.module";
+import { FileDownloadModule } from "./file-download/file-download.module";
 import { GrantSourceModule } from "./grant-source/grant-source.module";
+import { LetterOfIntentModule } from "./letter-of-intent/letter-of-intent.module";
+import { OrganizationModule } from "./organization/organization.module";
+import { ProposalDraftModule } from "./proposal-draft/proposal-draft.module";
+import { ReadinessModule } from "./readiness/readiness.module";
 
 @Module({
-    imports: [ReadinessModule, OrganizationModule, ProposalDraftModule, GrantSourceModule],
+    imports: [
+        ReadinessModule,
+        ProposalDraftModule,
+        FileDownloadModule,
+        LetterOfIntentModule,
+        ExportModule,
+        GrantSourceModule,
+        OrganizationModule,
+    ],
 })
 export class MainModule {}

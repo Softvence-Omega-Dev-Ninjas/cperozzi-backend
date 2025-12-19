@@ -1,11 +1,34 @@
-import { Controller, Get, Res } from "@nestjs/common";
-import { ApiOkResponse } from "@nestjs/swagger";
+import { Body, Controller, Get, Post, Res } from "@nestjs/common";
+import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import type { Response } from "express";
+import { AppMailService } from "./common/mail/mail.service";
+import { TestEmailDto, TestEmailResponseDto } from "./common/mail/dto";
 
 const packageJson = require("../package.json");
 
 @Controller()
+@ApiTags("System")
 export class AppController {
+    constructor(private readonly mailService: AppMailService) {}
+
+    @Post("api/test-email")
+    @ApiOperation({
+        summary: "Test email configuration",
+        description: "Sends a test email to verify SMTP configuration is working correctly",
+    })
+    @ApiBody({
+        type: TestEmailDto,
+        required: false,
+        description: "Optional email address to send test email to",
+    })
+    @ApiOkResponse({
+        description: "Email test result",
+        type: TestEmailResponseDto,
+    })
+    async testEmail(@Body() testEmailDto?: TestEmailDto): Promise<TestEmailResponseDto> {
+        return this.mailService.testEmailConfiguration(testEmailDto?.email);
+    }
+
     @ApiOkResponse({
         description: "Returns service health status for monitoring",
         schema: {

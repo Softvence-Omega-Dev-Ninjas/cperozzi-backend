@@ -11,7 +11,7 @@ model ProposalDraft {
   sustainabilityPlan         String?  @map("sustainability_plan") @db.Text
   budgetSummary              String?  @map("budget_summary") @db.Text
   conclusion                 String?  @map("conclusion") @db.Text
-  status                     Boolean  @default(false) // false = draft, true = completed
+  downloadStatus             Boolean  @default(false) @map("download_status") // false = draft, true = completed
   createdAt                  DateTime @default(now()) @map("created_at")
 
   organization Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)

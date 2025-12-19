@@ -75,10 +75,10 @@ export class ProposalDraftResponseDto {
     conclusion?: string;
 
     @ApiProperty({
-        description: "Status of the proposal draft (false = draft, true = completed)",
+        description: "Download status of the proposal draft (false = draft, true = completed)",
         example: false,
     })
-    status: boolean;
+    downloadStatus: boolean;
 
     @ApiProperty({
         description: "Creation timestamp",
