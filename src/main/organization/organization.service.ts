@@ -1,14 +1,15 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateOrganizationDto } from "./dto/create-organization.dto";
 import { UpdateOrganizationDto } from "./dto/update-organization.dto";
 import { PrismaService } from "@common/prisma/prisma.service";
+import { OrganizationResponseDto } from "./organization.response.dto";
 
 @Injectable()
 export class OrganizationService {
     constructor(private readonly prisma: PrismaService) {}
 
-    create(createOrganizationDto: CreateOrganizationDto) {
-        const organization = this.prisma.organization.create({
+   async create(createOrganizationDto: CreateOrganizationDto) {
+        const organization = await this.prisma.organization.create({
             data: createOrganizationDto,
         });
 
@@ -18,25 +19,25 @@ export class OrganizationService {
         return organization;
     }
 
-    findOne(id: string) {
-        const organization = this.prisma.organization.findUnique({
+   async findOne(id: string) {
+        const organization = await this.prisma.organization.findUnique({
             where: { id },
         });
 
         if (!organization) {
-            throw new BadRequestException("Organization not found");
+            throw new NotFoundException("Organization not found");
         }
 
         return organization;
     }
 
-    update(id: string, updateOrganizationDto: UpdateOrganizationDto) {
-        const organization = this.prisma.organization.findUnique({
+ async   update(id: string, updateOrganizationDto: UpdateOrganizationDto) {
+        const organization = await this.prisma.organization.findUnique({
             where: { id },
         });
 
         if (!organization) {
-            throw new BadRequestException("Organization not found");
+            throw new NotFoundException("Organization not found");
         }
 
         const updateOrganizaiton = this.prisma.organization.update({
@@ -44,12 +45,31 @@ export class OrganizationService {
             data: updateOrganizationDto,
         });
 
-        
-
-        return `This action updates a #${id} organization`;
+        return this.mapToRespnseDto(updateOrganizaiton);
     }
 
-    remove(id: number) {
+    remove(id: string) {
         return `This action removes a #${id} organization`;
+    }
+
+    private mapToRespnseDto(organization: any): OrganizationResponseDto {
+        return {
+            id: organization.id,
+            organizationName: organization.organizationName,
+            organizationWebsite: organization.organizationWebsite,
+            missionStatement: organization.missionStatement,
+            refinedMissionStatement: organization.refinedMissionStatement,
+            corePurpose: organization.corePurpose,
+            typeOfWork: organization.typeOfWork,
+            goalsAspirations: organization.goalsAspirations,
+            programs: organization.programs,
+            achievements: organization.achievements,
+            budget: organization.budget,
+            evaluation: organization.evaluation,
+            noOfGrants: organization.noOfGrants,
+            sharedLink: organization.sharedLink,
+            isGrant: organization.isGrant,
+            createdAt: organization.createdAt,
+        };
     }
 }
