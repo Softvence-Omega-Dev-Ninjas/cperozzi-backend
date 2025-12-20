@@ -42,10 +42,25 @@ export class GrantSourceService {
                 );
             }
 
+            // Validate that at least one field is provided (opportunityText, opportunityUrl, or opportunityPdf)
+            const hasOpportunityText =
+                createDto.opportunityText && createDto.opportunityText.trim().length > 0;
+            const hasOpportunityUrl =
+                createDto.opportunityUrl && createDto.opportunityUrl.trim().length > 0;
+            const hasOpportunityPdf =
+                createDto.opportunityPdf && createDto.opportunityPdf.trim().length > 0;
+            const hasPdfFile = pdfFile && pdfFile.size > 0;
+
+            if (!hasOpportunityText && !hasOpportunityUrl && !hasOpportunityPdf && !hasPdfFile) {
+                throw new BadRequestException(
+                    "At least one field must be provided: opportunityText, opportunityUrl, or opportunityPdf (or upload a PDF file)",
+                );
+            }
+
             let opportunityPdf: string | undefined = createDto.opportunityPdf;
 
-            // Upload PDF file to S3 if provided
-            if (pdfFile) {
+            // Upload PDF file to S3 if provided and valid
+            if (pdfFile && pdfFile.size > 0 && pdfFile.buffer && pdfFile.buffer.length > 0) {
                 try {
                     // Validate file type
                     if (pdfFile.mimetype !== "application/pdf") {
@@ -61,11 +76,25 @@ export class GrantSourceService {
                 }
             }
 
+            // Only include valid fields in the create data
+            const createData: any = {
+                organizationId: createDto.organizationId,
+            };
+
+            if (hasOpportunityText) {
+                createData.opportunityText = createDto.opportunityText;
+            }
+
+            if (hasOpportunityUrl) {
+                createData.opportunityUrl = createDto.opportunityUrl;
+            }
+
+            if (opportunityPdf) {
+                createData.opportunityPdf = opportunityPdf;
+            }
+
             const grantSource = await this.prisma.internalGrantSource.create({
-                data: {
-                    ...createDto,
-                    opportunityPdf,
-                },
+                data: createData,
             });
 
             return this.mapToResponseDto(grantSource);
