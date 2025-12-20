@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsUUID, IsUrl } from "class-validator";
+import { IsString, IsOptional, IsUUID, IsUrl, ValidateIf } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export class CreateInternalGrantSourceDto {
@@ -14,6 +14,12 @@ export class CreateInternalGrantSourceDto {
         example: "Funding for renewable energy projects",
     })
     @IsOptional()
+    @ValidateIf(
+        (o) =>
+            o.opportunityText !== undefined &&
+            o.opportunityText !== null &&
+            o.opportunityText !== "",
+    )
     @IsString()
     opportunityText?: string;
 
@@ -22,6 +28,10 @@ export class CreateInternalGrantSourceDto {
         example: "https://example.com/grant-opportunity",
     })
     @IsOptional()
+    @ValidateIf(
+        (o) =>
+            o.opportunityUrl !== undefined && o.opportunityUrl !== null && o.opportunityUrl !== "",
+    )
     @IsUrl()
     opportunityUrl?: string;
 
@@ -30,6 +40,10 @@ export class CreateInternalGrantSourceDto {
         example: "https://s3.amazonaws.com/my-bucket/opportunity.pdf",
     })
     @IsOptional()
+    @ValidateIf(
+        (o) =>
+            o.opportunityPdf !== undefined && o.opportunityPdf !== null && o.opportunityPdf !== "",
+    )
     @IsString()
     opportunityPdf?: string;
 }
