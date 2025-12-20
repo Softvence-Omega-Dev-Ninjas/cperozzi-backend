@@ -23,14 +23,20 @@ export class OrganizationService {
     }
 
     async findAll() {
-        const organizations = await this.prisma.organization.findMany({
-            orderBy: { createdAt: "desc" },
-        });
-        return organizations.map((org) => this.mapToRespnseDto(org));
+        try {
+            const organizations = await this.prisma.organization.findMany({
+                orderBy: { createdAt: "desc" },
+            });
+            return organizations.map((org) => this.mapToRespnseDto(org));
+        } catch (error) {
+            throw new BadRequestException(`Failed to get organizations`);
+        }
     }
 
     async findOne(id: string) {
-        const organization = await this.prisma.organization.findUnique({
+        try {
+            
+            const organization = await this.prisma.organization.findUnique({
             where: { id },
         });
 
@@ -39,10 +45,14 @@ export class OrganizationService {
         }
 
         return this.mapToRespnseDto(organization);
+        } catch (error) {
+              throw new BadRequestException(`Failed to get organization by ${id} `);
+        }
     }
 
     async update(id: string, updateOrganizationDto: UpdateOrganizationDto) {
-        const organization = await this.prisma.organization.findUnique({
+       try {
+         const organization = await this.prisma.organization.findUnique({
             where: { id },
         });
 
@@ -56,10 +66,14 @@ export class OrganizationService {
         });
 
         return this.mapToRespnseDto(updatedOrganization);
+       } catch (error) {
+          throw new BadRequestException(`Failed to update organizaition by ${id}`);
+       }
     }
 
     async remove(id: string) {
-        const organization = await this.prisma.organization.findUnique({
+     try {
+           const organization = await this.prisma.organization.findUnique({
             where: { id },
         });
 
@@ -72,6 +86,9 @@ export class OrganizationService {
         });
 
         return { message: "Organization deleted successfully" };
+     } catch (error) {
+          throw new BadRequestException(`Failed to delete organizations`);
+     }
     }
 
     private mapToRespnseDto(organization: any): OrganizationResponseDto {

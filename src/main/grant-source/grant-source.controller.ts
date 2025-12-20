@@ -11,6 +11,7 @@ import {
     ParseFilePipe,
     MaxFileSizeValidator,
     FileTypeValidator,
+    BadRequestException,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiOperation, ApiConsumes, ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -86,6 +87,26 @@ export class GrantSourceController {
             buffer: Buffer;
         },
     ): Promise<InternalGrantSourceResponseDto> {
+
+
+ const providedFields = [
+      createDto.opportunityText,
+      createDto.opportunityUrl,
+      pdfFile,
+    ].filter(Boolean);
+
+    if (providedFields.length === 0) {
+      throw new BadRequestException(
+        "Please provide one of opportunityText, opportunityUrl, or a file."
+      );
+    }
+
+    if (providedFields.length > 1) {
+      throw new BadRequestException(
+        "Only one of opportunityText, opportunityUrl, or a file is allowed."
+      );
+    }
+
         return this.grantSourceService.create(createDto, pdfFile);
     }
 
