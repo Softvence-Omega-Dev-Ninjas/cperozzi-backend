@@ -76,3 +76,8 @@ data
 TODO-SAIKAT.md
 /resources
 /docs
+
+# Docker version tracking
+.docker-version
+docker-build-push.bat
+Dockerfile
