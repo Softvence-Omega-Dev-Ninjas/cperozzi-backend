@@ -1,0 +1,155 @@
+model FileDownload {
+  id           String    @id @default(uuid()) @db.Uuid
+  fileName     String    @map("file_name") @db.VarChar
+  filePath     String?   @map("file_path") @db.VarChar
+  fileType     String?   @map("file_type") @db.VarChar
+  email        String?   @db.VarChar
+  emailSent    Boolean   @default(false) @map("email_sent")
+  emailSentAt  DateTime? @map("email_sent_at")
+  downloadedAt DateTime  @default(now()) @map("downloaded_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  @@index([email])
+  @@index([downloadedAt])
+  @@map("file_downloads")
+}
+
+model GrantOpportunity {
+  id                  String    @id @default(uuid()) @db.Uuid
+  organizationId      String    @map("organization_id") @db.Uuid
+  funderName          String    @map("funder_name") @db.VarChar
+  focusArea           String?   @map("focus_area") @db.VarChar
+  deadline            DateTime? @db.Date
+  amountUsd           Decimal?  @map("amount_usd") @db.Decimal(15, 2)
+  eligibility         String?   @db.VarChar
+  attachmentsRequired String?   @map("attachments_required") @db.VarChar
+  applicationFormat   String?   @map("application_format") @db.VarChar
+  funderProfileUrl    String?   @map("funder_profile_url") @db.VarChar
+  recipGsProfileLink  String?   @map("recip_gs_profile_link") @db.VarChar
+  source              String?   @db.VarChar // internal, candid, grants.gov, foundation, corporate
+  internalSourceId    String?   @map("internal_source_id") @db.Uuid
+  grantType           String?   @map("grant_type") @db.VarChar // private, govt, corporate
+  createdAt           DateTime  @default(now()) @map("created_at")
+
+  organization    Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  internalSource  InternalGrantSource? @relation(fields: [internalSourceId], references: [id], onDelete: SetNull)
+  readinessScores ReadinessScore[]
+  lettersOfIntent LetterOfIntent[]
+  proposalDrafts  ProposalDraft[]
+
+  @@index([organizationId])
+  @@index([internalSourceId])
+  @@map("grant_opportunities")
+}
+
+model InternalGrantSource {
+  id              String   @id @default(uuid()) @db.Uuid
+  organizationId  String   @map("organization_id") @db.Uuid
+  opportunityText String?  @map("opportunity_text") @db.Text
+  opportunityUrl  String?  @map("opportunity_url") @db.VarChar
+  opportunityPdf  String?  @map("opportunity_pdf") @db.VarChar
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  organization       Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  grantOpportunities GrantOpportunity[]
+
+  @@index([organizationId])
+  @@map("internal_grant_sources")
+}
+
+model LetterOfIntent {
+  id                    String   @id @default(uuid()) @db.Uuid
+  organizationId        String   @map("organization_id") @db.Uuid
+  grantId               String   @map("grant_id") @db.Uuid
+  introduction          String?  @db.Text
+  organizationalSummary String?  @map("organizational_summary") @db.Text
+  projectOverview       String?  @map("project_overview") @db.Text
+  fundingRequest        Decimal? @map("funding_request") @db.Decimal(15, 2)
+  closingStatement      String?  @map("closing_statement") @db.Text
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  organization Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  grant        GrantOpportunity @relation(fields: [grantId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([grantId])
+  @@map("letters_of_intent")
+}
+
+model Organization {
+  id                      String   @id @default(uuid()) @db.Uuid
+  organizationName        String   @map("organization_name") @db.VarChar
+  organizationWebsite     String?  @map("organization_website") @db.VarChar
+  missionStatement        String?  @map("mission_statement") @db.Text
+  refinedMissionStatement String?  @map("refined_mission_statement") @db.Text
+  corePurpose             String?  @map("core_purpose") @db.Text
+  typeOfWork              String?  @map("type_of_work") @db.VarChar
+  goalsAspirations        String?  @map("goals_aspirations") @db.Text
+  programs                String?  @map("programs") @db.Text
+  achievements            String?  @map("achievements") @db.Text
+  budget                  String?  @map("budget") @db.Text
+  evaluation              String?  @map("evaluation") @db.Text
+  noOfGrants              Int?     @map("no_of_grants")
+  sharedLink              String?  @map("shared_link") @db.VarChar
+  isGrant                 Boolean  @default(false) @map("is_grant")
+  createdAt               DateTime @default(now()) @map("created_at")
+
+  grantOpportunities   GrantOpportunity[]
+  internalGrantSources InternalGrantSource[]
+  readinessScores      ReadinessScore[]
+  lettersOfIntent      LetterOfIntent[]
+  proposalDrafts       ProposalDraft[]
+
+  @@map("organizations")
+}
+
+model ProposalDraft {
+  id                         String   @id @default(uuid()) @db.Uuid
+  organizationId             String   @map("organization_id") @db.Uuid
+  grantId                    String   @map("grant_id") @db.Uuid
+  executiveSummary           String?  @map("executive_summary") @db.Text
+  introductionToOrganization String?  @map("introduction_to_organization") @db.Text
+  problemStatement           String?  @map("problem_statement") @db.Text
+  goalsAndObjectives         String?  @map("goals_and_objectives") @db.Text
+  methodsAndActivities       String?  @map("methods_and_activities") @db.Text
+  evaluationPlan             String?  @map("evaluation_plan") @db.Text
+  sustainabilityPlan         String?  @map("sustainability_plan") @db.Text
+  budgetSummary              String?  @map("budget_summary") @db.Text
+  conclusion                 String?  @map("conclusion") @db.Text
+  downloadStatus             Boolean  @default(false) @map("download_status") // false = draft, true = completed
+  createdAt                  DateTime @default(now()) @map("created_at")
+
+  organization Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  grant        GrantOpportunity @relation(fields: [grantId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([grantId])
+  @@map("proposal_drafts")
+}
+
+model ReadinessScore {
+  id               String   @id @default(uuid()) @db.Uuid
+  organizationId   String   @map("organization_id") @db.Uuid
+  grantId          String   @map("grant_id") @db.Uuid
+  readinessScore   Int      @map("readiness_score")
+  strengths        String?  @db.Text
+  improvementAreas String?  @map("improvement_areas") @db.Text
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  organization Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  grant        GrantOpportunity @relation(fields: [grantId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([grantId])
+  @@map("readiness_scores")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
