@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MailModule as SoftvenceMailModule } from "@softvence/mail";
 import { AppMailService } from "./mail.service";
+import { TemplateService } from "./template.service";
 
 @Module({
     imports: [
@@ -16,14 +17,26 @@ import { AppMailService } from "./mail.service";
                 const mailPortStr = configService.get<string>("MAIL_PORT");
                 const mailPort = mailPortStr ? parseInt(mailPortStr, 10) : 587;
                 const mailSecure = configService.get<string>("MAIL_SECURE") === "true";
-                const mailFrom = configService.get<string>("MAIL_FROM") || mailUser;
                 const mailDisplayName =
                     configService.get<string>("MAIL_DISPLAY_NAME") || "CPerozzi";
 
-                const formattedFrom =
-                    mailFrom && mailFrom.includes("<")
-                        ? mailFrom
-                        : `"${mailDisplayName}" <${mailUser}>`;
+                if (!mailUser) {
+                    throw new Error("MAIL_USER is required for email configuration");
+                }
+                if (!mailPass) {
+                    throw new Error("MAIL_PASS is required for email configuration");
+                }
+
+                let displayName = mailDisplayName;
+                const mailFrom = configService.get<string>("MAIL_FROM");
+                if (mailFrom && mailFrom.includes("<")) {
+                    const match = mailFrom.match(/^"?(.+?)"?\s*<(.+?)>$/);
+                    if (match) {
+                        displayName = match[1].trim() || mailDisplayName;
+                    }
+                }
+
+                const formattedFrom = `"${displayName}" <${mailUser}>`;
                 const tlsOptions = {
                     rejectUnauthorized: false,
                     servername: mailHost,
@@ -33,6 +46,8 @@ import { AppMailService } from "./mail.service";
                     host: mailHost,
                     port: mailPort,
                     secure: mailSecure,
+                    user: mailUser,
+                    from: formattedFrom,
                     tlsRejectUnauthorized: false,
                     nodeTlsRejectUnauthorized: process.env.NODE_TLS_REJECT_UNAUTHORIZED,
                     tlsOptions,
@@ -65,21 +80,21 @@ import { AppMailService } from "./mail.service";
                               pass: mailPass,
                           },
                           tls: {
-                              rejectUnauthorized: false, // Force false for self-signed certs
+                              rejectUnauthorized: false,
                           },
                       };
 
                 return {
                     transport,
                     defaults: {
-                        from: formattedFrom, // Use formatted from address that matches authenticated user
+                        from: formattedFrom,
                     },
                 };
             },
             inject: [ConfigService],
         }),
     ],
-    providers: [AppMailService],
+    providers: [AppMailService, TemplateService],
     exports: [AppMailService],
 })
 export class MailModule {}
