@@ -1,33 +1,53 @@
 import { Injectable, Logger } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { MailService } from "@softvence/mail";
 import { TestEmailResponseDto } from "./dto/test-email-response.dto";
+import { TemplateService } from "./template.service";
 
 @Injectable()
 export class AppMailService {
     private readonly logger = new Logger(AppMailService.name);
+    private readonly fromAddress: string;
 
-    constructor(private readonly mailService: MailService) {}
+    constructor(
+        private readonly mailService: MailService,
+        private readonly configService: ConfigService,
+        private readonly templateService: TemplateService,
+    ) {
+        const mailUser = this.configService.get<string>("MAIL_USER");
+        const mailDisplayName = this.configService.get<string>("MAIL_DISPLAY_NAME") || "CPerozzi";
+
+        let displayName = mailDisplayName;
+        const mailFrom = this.configService.get<string>("MAIL_FROM");
+        if (mailFrom && mailFrom.includes("<")) {
+            const match = mailFrom.match(/^"?(.+?)"?\s*<(.+?)>$/);
+            if (match) {
+                displayName = match[1].trim() || mailDisplayName;
+            }
+        }
+
+        this.fromAddress = `"${displayName}" <${mailUser}>`;
+        this.logger.log(`📧 Mail service initialized with from address: ${this.fromAddress}`);
+    }
 
     async sendFileDownloadEmail(to: string, fileName: string, filePath?: string): Promise<void> {
         try {
+            const displayName = this.configService.get<string>("MAIL_DISPLAY_NAME") || "CPerozzi";
             const subject = `Your requested file: ${fileName}`;
-            const htmlBody = `
-                <html>
-                    <body>
-                        <h2>File Download</h2>
-                        <p>Thank you for downloading <strong>${fileName}</strong>.</p>
-                        ${filePath ? `<p>File path: ${filePath}</p>` : ""}
-                        <p>Best regards,<br>CPerozzi Team</p>
-                    </body>
-                </html>
-            `;
-            const textBody = `Thank you for downloading ${fileName}.${filePath ? ` File path: ${filePath}` : ""}`;
+
+            const { html, text } = this.templateService.renderEmail("file-download", {
+                subject,
+                displayName,
+                fileName,
+                filePath,
+            });
 
             await this.mailService.send({
+                from: this.fromAddress,
                 to,
                 subject,
-                html: htmlBody,
-                text: textBody,
+                html,
+                text,
             });
 
             this.logger.log(`Email sent successfully to ${to} for file ${fileName}`);
@@ -42,25 +62,22 @@ export class AppMailService {
         const timestamp = new Date();
 
         try {
+            const displayName = this.configService.get<string>("MAIL_DISPLAY_NAME") || "CPerozzi";
             const subject = "Email Configuration Test - CPerozzi";
-            const htmlBody = `
-                <html>
-                    <body>
-                        <h2>Email Configuration Test</h2>
-                        <p>This is a test email to verify that your email configuration is working correctly.</p>
-                        <p><strong>Test Time:</strong> ${timestamp.toISOString()}</p>
-                        <p>If you received this email, your SMTP configuration is working properly!</p>
-                        <p>Best regards,<br>CPerozzi System</p>
-                    </body>
-                </html>
-            `;
-            const textBody = `This is a test email to verify that your email configuration is working correctly. Test Time: ${timestamp.toISOString()}`;
 
+            const { html, text } = this.templateService.renderEmail("test-email", {
+                subject,
+                displayName,
+                testTime: timestamp.toISOString(),
+            });
+
+            this.logger.log(`Sending test email from ${this.fromAddress} to ${testEmailAddress}`);
             await this.mailService.send({
+                from: this.fromAddress,
                 to: testEmailAddress,
                 subject,
-                html: htmlBody,
-                text: textBody,
+                html,
+                text,
             });
 
             this.logger.log(`Test email sent successfully to ${testEmailAddress}`);

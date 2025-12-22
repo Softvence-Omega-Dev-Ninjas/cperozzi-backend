@@ -1,0 +1,9 @@
+Email Configuration Test
+
+This is a test email to verify that your email configuration is working correctly.
+
+Test Time: {{testTime}}
+
+If you received this email, your SMTP configuration is working properly!
+
+Thank you for using CPerozzi email service.

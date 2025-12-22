@@ -1,0 +1,11 @@
+File Download Confirmation
+
+Thank you for downloading {{fileName}}.
+
+{{#if filePath}}
+File Path: {{filePath}}
+{{/if}}
+
+Your file download request has been processed successfully.
+
+If you have any questions or need assistance, please don't hesitate to contact our support team.
