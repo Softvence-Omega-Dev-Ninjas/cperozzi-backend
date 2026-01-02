@@ -99,32 +99,31 @@ jobs:
                       ProxyCommand cloudflared access ssh --hostname ${{ secrets.VPS_HOST }}
                       IdentityFile ~/.ssh/server.ssh
                       StrictHostKeyChecking no
+                      LogLevel ERROR
+                      RequestTTY no
                   EOF
                   chmod 600 ~/.ssh/config
 
             - name: Test SSH Connection
-              run: ssh server 'echo "SSH connection successful"'
+              run: ssh -q server 'echo "SSH connection successful"'
 
             - name: Copy Docker Compose File
               run: |
-                  ssh server "mkdir -p ~/apps/${{ secrets.PACKAGE_NAME }}"
-                  scp -F ~/.ssh/config docker-compose.yml server:~/apps/${{ secrets.PACKAGE_NAME }}/
+                  ssh -q server "mkdir -p ~/apps/${{ secrets.PACKAGE_NAME }}"
+                  scp -q -F ~/.ssh/config docker-compose.yml server:~/apps/${{ secrets.PACKAGE_NAME }}/
 
             - name: Deploy Application
               run: |
-                  ssh server << 'EOF'
+                  ssh -q server << 'EOF'
                   cd ~/apps/${{ secrets.PACKAGE_NAME }}
 
-                  # Pull the latest images
+                  if [ ! -f .env ]; then
+                    echo "Warning: .env file not found in ~/apps/${{ secrets.PACKAGE_NAME }}"
+                  fi
+
                   docker compose --profile prod pull
-
-                  # Stop and remove existing containers safely
                   docker compose --profile prod down --remove-orphans
-
-                  # Start containers in detached mode
                   docker compose --profile prod up -d
-
-                  # Prune unused Docker objects
                   docker system prune -f
 
                   echo "Deployment completed successfully!"
