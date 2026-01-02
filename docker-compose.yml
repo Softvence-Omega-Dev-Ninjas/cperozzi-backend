@@ -5,9 +5,6 @@ services:
         profiles:
             - prod
         platform: linux/amd64
-        build:
-            context: .
-            dockerfile: Dockerfile
         ports:
             - "${PORT}:${PORT}"
         env_file:
