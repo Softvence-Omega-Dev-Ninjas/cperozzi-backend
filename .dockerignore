@@ -1,5 +1,6 @@
 docker-compose.yaml
 .gitignore
-.nodemodules
+node_modules
 .env
-.dist
+dist
+.docker-version
