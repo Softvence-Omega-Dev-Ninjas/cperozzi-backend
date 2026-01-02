@@ -3,11 +3,14 @@ FROM node:20 AS builder
 
 WORKDIR /app
 
-# Copy package files
+# Copy package files and pnpm config
 COPY package*.json ./
+COPY pnpm-lock.yaml* ./
+COPY .npmrc* ./
+COPY pnpm-workspace.yaml ./
 
 # Install deps
-RUN npm i -g pnpm@latest && pnpm i 
+RUN npm i -g pnpm@latest && pnpm install
 
 # Copy prisma folder
 COPY prisma ./prisma
@@ -16,7 +19,8 @@ COPY prisma.config.ts ./
 # Copy source code
 COPY . .
 
-# Generate Prisma client
+# Generate Prisma client (DATABASE_URL is required by prisma.config.ts but not used during generation)
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 RUN pnpm prisma:generate
 
 # Build the app
