@@ -70,6 +70,7 @@ pnpm-lock.yml
 deploy_key*
 backups/
 nginx
+server.ssh
 
 # Data
 data

@@ -1,4 +1,4 @@
-name: Lint, Format, Build, Push & Deploy
+name: CI/CD Pipeline
 
 on:
     push:
@@ -68,55 +68,64 @@ jobs:
                   cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{ secrets.PACKAGE_NAME }}:buildcache
                   cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{ secrets.PACKAGE_NAME }}:buildcache,mode=max
 
-    # deploy:
-    #     name: Deploy
-    #     runs-on: ubuntu-latest
-    #     needs: build-and-push
-    #     if: github.ref == 'refs/heads/main'
+    deploy:
+        name: Deploy
+        runs-on: ubuntu-latest
+        needs: build-and-push
+        if: github.ref == 'refs/heads/main'
 
-    #     steps:
-    #         - uses: actions/checkout@v4
+        steps:
+            - uses: actions/checkout@v4
 
-    #         - name: Login to Docker Hub
-    #           uses: docker/login-action@v3
-    #           with:
-    #               username: ${{ secrets.DOCKER_USERNAME }}
-    #               password: ${{ secrets.DOCKER_PASSWORD }}
+            - name: Install Cloudflared
+              run: |
+                  wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+                  sudo dpkg -i cloudflared-linux-amd64.deb
+                  cloudflared --version
 
-    #         - name: Copy Compose File
-    #           uses: appleboy/scp-action@v0.1.7
-    #           with:
-    #               host: ${{ secrets.VPS_HOST }}
-    #               username: ${{ secrets.VPS_USER }}
-    #               key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
-    #               source: "docker-compose.yaml"
-    #               target: "~/${{ secrets.PACKAGE_NAME }}"
+            - name: Setup SSH Key
+              run: |
+                  mkdir -p ~/.ssh
+                  echo "${{ secrets.VPS_SSH_PRIVATE_KEY }}" > ~/.ssh/server.ssh
+                  chmod 600 ~/.ssh/server.ssh
+                  ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
 
-    #         - name: Copy Caddy File
-    #           uses: appleboy/scp-action@v0.1.7
-    #           with:
-    #               host: ${{ secrets.VPS_HOST }}
-    #               username: ${{ secrets.VPS_USER }}
-    #               key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
-    #               source: "Caddyfile"
-    #               target: "~/${{ secrets.PACKAGE_NAME }}"
+            - name: Setup SSH Config
+              run: |
+                  cat >> ~/.ssh/config << 'EOF'
+                  Host server
+                      HostName ${{ secrets.VPS_HOST }}
+                      User ${{ secrets.VPS_USER }}
+                      ProxyCommand cloudflared access ssh --hostname ${{ secrets.VPS_HOST }}
+                      IdentityFile ~/.ssh/server.ssh
+                      StrictHostKeyChecking no
+                  EOF
+                  chmod 600 ~/.ssh/config
 
-    #         - name: Deploy via SSH
-    #           uses: appleboy/ssh-action@v1.0.3
-    #           with:
-    #               host: ${{ secrets.VPS_HOST }}
-    #               username: ${{ secrets.VPS_USER }}
-    #               key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
-    #               script: |
-    #                   cd ~/${{ secrets.PACKAGE_NAME }}
-    #                   # Pull the latest images
-    #                   docker compose --profile prod pull
+            - name: Test SSH Connection
+              run: ssh server 'echo "SSH connection successful"'
 
-    #                   # Stop and remove existing containers safely
-    #                   docker compose --profile prod down --remove-orphans
+            - name: Copy Docker Compose File
+              run: |
+                  ssh server "mkdir -p ~/apps/${{ secrets.PACKAGE_NAME }}"
+                  scp -F ~/.ssh/config docker-compose.yml server:~/apps/${{ secrets.PACKAGE_NAME }}/
 
-    #                   # Start containers in detached mode
-    #                   docker compose --profile prod up -d
+            - name: Deploy Application
+              run: |
+                  ssh server << 'EOF'
+                  cd ~/apps/${{ secrets.PACKAGE_NAME }}
 
-    #                   # Prune unused Docker objects (optional, cleans disk)
-    #                   docker system prune -f
+                  # Pull the latest images
+                  docker compose --profile prod pull
+
+                  # Stop and remove existing containers safely
+                  docker compose --profile prod down --remove-orphans
+
+                  # Start containers in detached mode
+                  docker compose --profile prod up -d
+
+                  # Prune unused Docker objects
+                  docker system prune -f
+
+                  echo "Deployment completed successfully!"
+                  EOF
